@@ -1,4 +1,15 @@
-# OpenId Connect Generic Changelog
+# Privacy Portal SSO Changelog (forked from OpenId Connect Generic @ 3.10.0)
+
+**0.1.0**
+
+- Feature: Configures "Sign In With Privacy Portal" as OAUTH provider and simplifies the settings page.
+- Feature: Adds "Subscribe Anonymously With Privacy Portal" to enable Newsletter subscriptions with Privacy Aliases.
+- Feature: Adds "Subscribe Anonymously With Privacy Portal" integration with the MailPoet Plugin.
+- Feature: Adds "Subscribe Anonymously With Privacy Portal" integration with the MC4WP Plugin.
+- Feature: Adds "Subscribe Anonymously With Privacy Portal" integration with The Newsletter Plugin.
+- Feature: Adds "Subscribe Anonymously With Privacy Portal" integration with the ConvertKit Plugin.
+
+## Pre-Fork Changelog (from OpenId Connect Generic)
 
 **3.10.0**
 

@@ -6,7 +6,7 @@ parameters:
     - tests/phpstan-bootstrap.php
 
   paths:
-    - openid-connect-generic.php
+    - privacy-portal-sso.php
     - includes/
     - ./
 
@@ -26,4 +26,25 @@ parameters:
     # Uses func_get_args()
     #- '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
     # Ignore cookie_redirect_key deprecation errors.
-    - '/^Fetching deprecated class constant COOKIE_REDIRECT_KEY of class OpenID_Connect_Generic_Client_Wrapper/'
+    - '/^Fetching deprecated class constant COOKIE_REDIRECT_KEY of class PP_SSO_Client_Wrapper/'
+
+    # Ignore external ConvertKit Plugin classes and methods
+    - '/class ConvertKit_[a-zA-Z0-9_]+ not found/'
+    - '/method .* on an unknown class ConvertKit_[a-zA-Z0-9_]+/'
+    - '/Constant CONVERTKIT_[a-zA-Z0-9_]+ not found/'
+    - '/function method_exists\b.*\bConvertKit_[a-zA-Z0-9_]+\b.*evaluate to false/'
+
+    # Ignore external MailPoet Plugin classes and methods
+    - '/method .* on an unknown class MailPoet[\a-zA-Z0-9_]+/'
+    - '/function method_exists\b.*\bMailPoet[\a-zA-Z0-9_]+\b.*evaluate to false/'
+
+    # Ignore external MC4WP Plugin classes and methods
+    - '/Function mc4wp_[a-zA-Z0-9_]+ not found/'
+    - '/class MC4WP_[a-zA-Z0-9_]+ not found/'
+    - '/method .* on an unknown class MC4WP_[a-zA-Z0-9_]+/'
+    - '/function method_exists\b.*\bMC4WP_[a-zA-Z0-9_]+\b.*evaluate to false/'
+
+    # Ignore external Newsletter Plugin classes and methods
+    - '/method .* on an unknown class Newsletter/'
+    - '/constant .* on an unknown class TNP_[a-zA-Z0-9_]+/'
+    - '/function method_exists\b.*\bNewsletter\b.*evaluate to false/'

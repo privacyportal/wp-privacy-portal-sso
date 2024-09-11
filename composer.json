@@ -1,10 +1,15 @@
 {
-  "name": "daggerhart/openid-connect-generic",
+  "name": "privacyportal/wp-privacy-portal-sso",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-only",
-  "description": "OpenID Connect generic WordPress plugin.",
-  "homepage": "https://github.com/daggerhart/openid-connect-generic",
+  "description": "Anonymous OAUTH authentication and newsletter subscriptions using Privacy Portal.",
+  "homepage": "https://github.com/privacyportal/wp-privacy-portal-sso",
   "authors": [
+    {
+      "name": "Privacy Portal",
+      "email": "support@privacyportal.org",
+      "homepage": "https://privacyportal.org"
+    },
     {
       "name": "Jonathan Daggerhart",
       "email": "jonathan@daggerhart.com",
@@ -18,10 +23,13 @@
   ],
   "keywords": [
     "wordpress",
-    "openid"
+    "openid",
+    "Sign In With Privacy Portal",
+    "Subscribe Anonymously",
+    "Privacy Portal"
   ],
   "support": {
-    "issues": "https://github.com/daggerhart/openid-connect-generic/issues"
+    "issues": "https://github.com/privacyportal/wp-privacy-portal-sso/issues"
   },
   "repositories": [
     {
@@ -76,13 +84,18 @@
   },
   "autoload": {
     "classmap": [
-      "openid-connect-generic.php",
-      "includes/openid-connect-generic-client.php",
-      "includes/openid-connect-generic-client-wrapper.php",
-      "includes/openid-connect-generic-login-form.php",
-      "includes/openid-connect-generic-option-logger.php",
-      "includes/openid-connect-generic-option-settings.php",
-      "includes/openid-connect-generic-settings-page.php"
+      "privacy-portal-sso.php",
+      "includes/pp-sso-client.php",
+      "includes/pp-sso-client-wrapper.php",
+      "includes/pp-sso-login-form.php",
+      "includes/pp-sso-option-logger.php",
+      "includes/pp-sso-option-settings.php",
+      "includes/pp-sso-settings-page.php",
+      "includes/pp-sso-subscribe-form.php",
+      "includes/pp-sso-ext-convertkit-plugin.php",
+      "includes/pp-sso-ext-mailpoet-plugin.php",
+      "includes/pp-sso-ext-mc4wp-plugin.php",
+      "includes/pp-sso-ext-newsletter-plugin.php"
     ]
   },
   "scripts": {

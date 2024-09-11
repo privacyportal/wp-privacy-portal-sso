@@ -1,55 +1,57 @@
-# OpenID Connect Generic Client #
-**Contributors:** [daggerhart](https://profiles.wordpress.org/daggerhart/), [tnolte](https://profiles.wordpress.org/tnolte/)  
-**Donate link:** http://www.daggerhart.com/  
-**Tags:** security, login, oauth2, openidconnect, apps, authentication, autologin, sso  
+# Privacy Portal SSO (for WP) #
+**Contributors:** [privacyportal](https://profiles.wordpress.org/privacyportal/), [daggerhart](https://profiles.wordpress.org/daggerhart/), [tnolte](https://profiles.wordpress.org/tnolte/)  
+**Tags:** security, privacy, login, oauth, sso  
 **Requires at least:** 5.0  
-**Tested up to:** 6.4.3  
-**Stable tag:** 3.10.0  
+**Tested up to:** 6.6.1  
+**Stable tag:** 0.1.0  
 **Requires PHP:** 7.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
-A simple client that provides SSO or opt-in authentication against a generic OAuth2 Server implementation.
+Welcome privacy-conscious users to your website and/or email newsletter, with features like "Sign In With Privacy Portal"
+and "Subscribe Anonymously".
 
 ## Description ##
 
-This plugin allows to authenticate users against OpenID Connect OAuth2 API with Authorization Code Flow.
-Once installed, it can be configured to automatically authenticate users (SSO), or provide a "Login with OpenID Connect"
-button on the login form. After consent has been obtained, an existing user is automatically logged into WordPress, while
-new users are created in WordPress database.
+This plugin allows users to authenticate using "Sign In With Privacy Portal". After obtaining consent, an existing user
+is automatically logged into WordPress, while new users are created in the WordPress database. [Privacy Portal](https://privacyportal.org)
+protects user privacy by generating email aliases (AKA Privacy Alias) that relay emails to their personal email addresses,
+keeping them private.
 
-Much of the documentation can be found on the Settings > OpenID Connect Generic dashboard page.
+Similarly, it allows visitors to anonymously subscribe your newsletter without ever exposing their personal emails to
+your site. It provides a "Subscribe Anonymously" button that authenticates visitors through Privacy Portal and enrolls
+them in your newsletter using an automatically generated email alias.
 
-Please submit issues to the Github repo: https://github.com/daggerhart/openid-connect-generic
+Much of the documentation can be found on the Settings > Privacy Portal SSO dashboard page.
 
 ## Installation ##
 
 1. Upload to the `/wp-content/plugins/` directory
 1. Activate the plugin
-1. Visit Settings > OpenID Connect and configure to meet your needs
+1. Visit Settings > Privacy Portal SSO and configure to meet your needs
 
 ## Frequently Asked Questions ##
 
-### What is the client's Redirect URI? ###
+### What is the Redirect URI? ###
 
-Most OAuth2 servers will require whitelisting a set of redirect URIs for security purposes. The Redirect URI provided
-by this client is like so:  https://example.com/wp-admin/admin-ajax.php?action=openid-connect-authorize
+Privacy Portal's OAUTH2 servers require a whitelist of redirect URIs for security purposes. When using Privacy Portal SSO,
+there are two redirect URIs that you need to add depending on the features you're looking to use. You must add both redirect
+URIs in your app configuration if you'd like to use both "Sign In With Privacy Portal" and "Subscribe Anonymously".
 
-Replace `example.com` with your domain name and path to WordPress.
-
-### Can I change the client's Redirect URI? ###
-
-Some OAuth2 servers do not allow for a client redirect URI to contain a query string. The default URI provided by
-this module leverages WordPress's `admin-ajax.php` endpoint as an easy way to provide a route that does not include
-HTML, but this will naturally involve a query string. Fortunately, this plugin provides a setting that will make use of
-an alternate redirect URI that does not include a query string.
-
-On the settings page for this plugin (Dashboard > Settings > OpenID Connect Generic) there is a checkbox for
-**Alternate Redirect URI**. When checked, the plugin will use the Redirect URI
-`https://example.com/openid-connect-authorize`.
-
+You can find the redirect URIs on the plugin's settings page.
 
 ## Changelog ##
+
+### 0.1.0 ###
+
+* Feature: Configures "Sign In With Privacy Portal" as OAUTH provider and simplifies the settings page.
+* Feature: Adds "Subscribe Anonymously With Privacy Portal" to enable Newsletter subscriptions with Privacy Aliases.
+* Feature: Adds "Subscribe Anonymously With Privacy Portal" integration with the MailPoet Plugin.
+* Feature: Adds "Subscribe Anonymously With Privacy Portal" integration with the MC4WP Plugin.
+* Feature: Adds "Subscribe Anonymously With Privacy Portal" integration with The Newsletter Plugin.
+* Feature: Adds "Subscribe Anonymously With Privacy Portal" integration with the ConvertKit Plugin.
+
+## Pre-Fork Changelog (from OpenId Connect Generic) ##
 
 ### 3.10.0 ###
 
@@ -122,4 +124,4 @@ On the settings page for this plugin (Dashboard > Settings > OpenID Connect Gene
 
 --------
 
-[See the previous changelogs here](https://github.com/oidc-wp/openid-connect-generic/blob/main/CHANGELOG.md#changelog)
+[See the previous changelogs here](https://github.com/privacyportal/wp-privacy-portal-sso/blob/main/CHANGELOG.md#changelog)
