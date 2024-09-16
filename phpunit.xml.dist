@@ -2,7 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/phpunit/bootstrap.php" backupGlobals="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
   <coverage processUncoveredFiles="true">
     <include>
-			<file>openid-connect-generic.php</file>
+			<file>privacy-portal-sso.php</file>
       <directory suffix=".php">includes/</directory>
     </include>
     <report>
@@ -14,7 +14,7 @@
   </php>
 	<testsuites>
 		<testsuite name="Plugin">
-			<file>./tests/phpunit/openid-connect-generic_test.php</file>
+			<file>./tests/phpunit/pp-sso_test.php</file>
 		</testsuite>
     <testsuite name="Includes">
       <directory suffix="_test.php">./tests/phpunit/includes/</directory>

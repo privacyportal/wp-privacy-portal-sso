@@ -2,29 +2,29 @@
 /**
  * Plugin logging class.
  *
- * @package   OpenID_Connect_Generic
+ * @package   Privacy_Portal_SSO
  * @category  Logging
- * @author    Jonathan Daggerhart <jonathan@daggerhart.com>
- * @copyright 2015-2023 daggerhart
+ * @author    Privacy Portal <support@privacyportal.org> (Forked from Jonathan Daggerhart <jonathan@daggerhart.com>)
+ * @copyright 2015-2023 daggerhart, 2024 Privacy Portal
  * @license   http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 
 /**
- * OpenID_Connect_Generic_Option_Logger class.
+ * PP_SSO_Option_Logger class.
  *
  * Simple class for logging messages to the options table.
  *
- * @package  OpenID_Connect_Generic
+ * @package  Privacy_Portal_SSO
  * @category Logging
  */
-class OpenID_Connect_Generic_Option_Logger {
+class PP_SSO_Option_Logger {
 
 	/**
 	 * Thw WordPress option name/key.
 	 *
 	 * @var string
 	 */
-	const OPTION_NAME = 'openid-connect-generic-logs';
+	const OPTION_NAME = 'pp-sso-logs';
 
 	/**
 	 * The default message type.
@@ -225,31 +225,31 @@ class OpenID_Connect_Generic_Option_Logger {
 		?>
 		<table id="logger-table" class="wp-list-table widefat fixed striped posts">
 			<thead>
-				<th class="col-details"><?php esc_html_e( 'Details', 'daggerhart-openid-connect-generic' ); ?></th>
-				<th class="col-data"><?php esc_html_e( 'Data', 'daggerhart-openid-connect-generic' ); ?></th>
+				<th class="col-details"><?php esc_html_e( 'Details', 'privacy-portal-sso' ); ?></th>
+				<th class="col-data"><?php esc_html_e( 'Data', 'privacy-portal-sso' ); ?></th>
 			</thead>
 			<tbody>
 			<?php foreach ( $logs as $log ) { ?>
 				<tr>
 					<td class="col-details">
 						<div>
-							<label><?php esc_html_e( 'Date', 'daggerhart-openid-connect-generic' ); ?></label>
+							<label><?php esc_html_e( 'Date', 'privacy-portal-sso' ); ?></label>
 							<?php print esc_html( ! empty( $log['time'] ) ? gmdate( 'Y-m-d H:i:s', $log['time'] ) : '' ); ?>
 						</div>
 						<div>
-							<label><?php esc_html_e( 'Type', 'daggerhart-openid-connect-generic' ); ?></label>
+							<label><?php esc_html_e( 'Type', 'privacy-portal-sso' ); ?></label>
 							<?php print esc_html( ! empty( $log['type'] ) ? $log['type'] : '' ); ?>
 						</div>
 						<div>
-							<label><?php esc_html_e( 'User', 'daggerhart-openid-connect-generic' ); ?>: </label>
+							<label><?php esc_html_e( 'User', 'privacy-portal-sso' ); ?>: </label>
 							<?php print esc_html( ( get_userdata( $log['user_ID'] ) ) ? get_userdata( $log['user_ID'] )->user_login : '0' ); ?>
 						</div>
 						<div>
-							<label><?php esc_html_e( 'URI ', 'daggerhart-openid-connect-generic' ); ?>: </label>
+							<label><?php esc_html_e( 'URI ', 'privacy-portal-sso' ); ?>: </label>
 							<?php print esc_url( ! empty( $log['uri'] ) ? $log['uri'] : '' ); ?>
 						</div>
 						<div>
-							<label><?php esc_html_e( 'Response&nbsp;Time&nbsp;(sec)', 'daggerhart-openid-connect-generic' ); ?></label>
+							<label><?php esc_html_e( 'Response&nbsp;Time&nbsp;(sec)', 'privacy-portal-sso' ); ?></label>
 							<?php print esc_html( ! empty( $log['response_time'] ) ? $log['response_time'] : '' ); ?>
 						</div>
 					</td>

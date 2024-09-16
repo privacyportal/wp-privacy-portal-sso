@@ -1,17 +1,17 @@
 <?php
 /**
- * Class OpenID_Connect_Generic_Client_Wrapper_Test
+ * Class PP_SSO_Client_Wrapper_Test (Forked from OpenID Connect Generic)
  *
- * @package   OpenID_Connect_Generic
+ * @package   Privacy_Portal_SSO
  */
 
 /**
  * Plugin OIDC/oAuth client wrapper class test case.
  */
-class OpenID_Connect_Generic_Client_Wrapper_Test extends WP_UnitTestCase {
+class PP_SSO_Client_Wrapper_Test extends WP_UnitTestCase {
 
 	/**
-	 * @var OpenID_Connect_Generic_Client_Wrapper
+	 * @var PP_SSO_Client_Wrapper
 	 */
 	private $client_wrapper;
 
@@ -33,7 +33,7 @@ class OpenID_Connect_Generic_Client_Wrapper_Test extends WP_UnitTestCase {
 		$user_id        = self::factory()->user->create();
 		$this->manager  = WP_Session_Tokens::get_instance( $user_id );
 
-		$this->client_wrapper = OpenID_Connect_Generic::instance()->client_wrapper;
+		$this->client_wrapper = Privacy_Portal_SSO::instance()->client_wrapper;
 
 	}
 
@@ -69,7 +69,7 @@ class OpenID_Connect_Generic_Client_Wrapper_Test extends WP_UnitTestCase {
 	 */
 	public function test_plugin_client_wrapper_remember_me() {
 		// Set the remember me option to true
-		add_filter( 'openid-connect-generic-remember-me', '__return_true' );
+		add_filter( 'pp-sso-remember-me', '__return_true' );
 
 		// Create a user and log in using the login function of the client wrapper
 		$user = $this->factory()->user->create_and_get( array( 'user_login' => 'test-remember-me-user' ) );
@@ -86,7 +86,7 @@ class OpenID_Connect_Generic_Client_Wrapper_Test extends WP_UnitTestCase {
 		$this->assertLessThan( time() + 15 * DAY_IN_SECONDS, $token['expiration'] );
 
 		// Cleanup
-		remove_filter( 'openid-connect-generic-remember-me', '__return_true' );
+		remove_filter( 'pp-sso-remember-me', '__return_true' );
 		$manager->destroy_all();
 		wp_clear_auth_cookie();
 	}

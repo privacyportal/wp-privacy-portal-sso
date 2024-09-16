@@ -1,22 +1,33 @@
 {
-  "name": "openid-connect-generic",
-  "version": "3.10.0",
-  "description": "OpenID Connect generic WordPress plugin.",
+  "name": "wp-privacy-portal-sso",
+  "version": "0.1.0",
+  "description": "Anonymous OAUTH authentication and newsletter subscriptions using Privacy Portal.",
   "main": "Gruntfile.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/daggerhart/openid-connect-generic"
+    "url": "https://github.com/privacyportal/wp-privacy-portal-sso"
   },
   "keywords": [
     "wordpress",
-    "openid"
+    "openid",
+    "Sign In With Privacy Portal",
+    "Subscribe Anonymously",
+    "Privacy Portal"
   ],
-  "author": "Jonathan Daggerhart",
+  "author": "Privacy Portal",
+  "contributors": [
+    {
+      "name": "Privacy Portal"
+    },
+    {
+      "name": "Jonathan Daggerhart"
+    }
+  ],
   "license": "GPL-2.0-only",
   "bugs": {
-    "url": "https://github.com/daggerhart/openid-connect-generic/issues"
+    "url": "https://github.com/privacyportal/wp-privacy-portal-sso/issues"
   },
-  "homepage": "https://github.com/daggerhart/openid-connect-generic#readme",
+  "homepage": "https://github.com/privacyportal/wp-privacy-portal-sso#readme",
   "dependencies": {
     "dev-require": "^0.1.0"
   },
@@ -51,6 +62,7 @@
   "scripts": {
     "preinstall": "npx force-resolutions --yes",
     "build": "npm run grunt build",
+    "release:dev": "npm run grunt dev-release",
     "release": "npm run grunt release",
     "grunt": "node_modules/.bin/grunt",
     "version": "npm run grunt version",

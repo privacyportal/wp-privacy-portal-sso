@@ -12,7 +12,7 @@ require_once getenv( 'WP_PHPUNIT__DIR' ) . '/includes/functions.php';
 // @phpstan-ignore-next-line
 tests_add_filter( 'muplugins_loaded', function() {
     // test set up, plugin activation, etc.
-    require dirname( __DIR__ ) . '/../openid-connect-generic.php';
+    require dirname( __DIR__ ) . '/../privacy-portal-sso.php';
 } );
 
 // Start up the WP testing environment.

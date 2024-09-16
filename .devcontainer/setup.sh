@@ -10,7 +10,7 @@ else
 	SITE_HOST="https://${CODESPACE_NAME}-8080.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
 fi
 
-PLUGIN_DIR=/workspaces/openid-connect-generic
+PLUGIN_DIR=/workspaces/privacy-portal-sso
 
 # Attempt to make ipv4 traffic have a higher priority than ipv6.
 sudo sh -c "echo 'precedence ::ffff:0:0/96 100' >> /etc/gai.conf"
@@ -31,7 +31,7 @@ fi
 cd "/app"
 if ! wp core is-installed 2>/dev/null; then
 	echo "Setting up WordPress at $SITE_HOST"
-	wp core install --url="$SITE_HOST" --title="OpenID Connect Development" --admin_user="admin" --admin_email="admin@example.com" --admin_password="password" --skip-email --quiet
+	wp core install --url="$SITE_HOST" --title="Privacy Portal SSO Development" --admin_user="admin" --admin_email="admin@example.com" --admin_password="password" --skip-email --quiet
 fi
 
 echo "Done!"

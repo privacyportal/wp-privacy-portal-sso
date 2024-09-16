@@ -1,14 +1,14 @@
 <?php
 /**
- * Class OpenID_Connect_Generic_Client_Test
+ * Class PP_SSO_Client_Test (Forked from OpenID Connect Generic)
  *
- * @package   OpenID_Connect_Generic
+ * @package   Privacy_Portal_SSO
  */
 
 /**
- * Plugin OIDC/oAuth client class test case.
+ * Plugin OIDC/OAUTH client class test case.
  */
-class OpenID_Connect_Generic_Client_Test extends WP_UnitTestCase {
+class PP_SSO_Client_Test extends WP_UnitTestCase {
 
 	/**
 	 * Test case setup method.

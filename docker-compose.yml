@@ -12,7 +12,7 @@ services:
       - phpmyadmin
       - web
       - mailhog
-    working_dir: /workspaces/openid-connect-generic
+    working_dir: /workspaces/privacy-portal-sso
     environment: &env
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: wordpress
@@ -23,10 +23,10 @@ services:
       CODESPACE_NAME: "${CODESPACE_NAME}"
       GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN: "${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
     volumes:
-      - .:/workspaces/openid-connect-generic:cached
+      - .:/workspaces/privacy-portal-sso:cached
       - ./tools/local-env:/app:cached
       - ./tools/php/php-cli.ini:/usr/local/etc/php/php-cli.ini:ro,cached
-      - .:/app/wp-content/plugins/daggerhart-openid-connect-generic:ro,cached
+      - .:/app/wp-content/plugins/privacy-portal-sso:ro,cached
       - ~/.composer:/root/.composer:cached
       - ~/.npm:/root/.npm:cached
     networks:
@@ -43,7 +43,7 @@ services:
       <<: *env
     volumes:
       - ./tools/local-env:/app:cached
-      - .:/app/wp-content/plugins/daggerhart-openid-connect-generic:ro,cached
+      - .:/app/wp-content/plugins/privacy-portal-sso:ro,cached
       - ./tools/apache/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro,cached
     networks:
       - oidcwp-net

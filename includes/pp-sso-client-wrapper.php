@@ -1,23 +1,23 @@
 <?php
 /**
- * Plugin OIDC/oAuth client warpper class.
+ * Plugin OIDC/OAUTH client warpper class.
  *
- * @package   OpenID_Connect_Generic
+ * @package   Privacy_Portal_SSO
  * @category  Authentication
- * @author    Jonathan Daggerhart <jonathan@daggerhart.com>
- * @copyright 2015-2020 daggerhart
+ * @author    Privacy Portal <support@privacyportal.org> (Forked from Jonathan Daggerhart <jonathan@daggerhart.com>)
+ * @copyright 2015-2020 daggerhart, 2024 Privacy Portal
  * @license   http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 
 /**
- * OpenID_Connect_Generic_Client_Wrapper class.
+ * PP_SSO_Client_Wrapper class.
  *
- * Plugin OIDC/oAuth client wrapper class.
+ * Plugin OIDC/OAUTH client wrapper class.
  *
- * @package  OpenID_Connect_Generic
+ * @package  Privacy_Portal_SSO
  * @category Authentication
  */
-class OpenID_Connect_Generic_Client_Wrapper {
+class PP_SSO_Client_Wrapper {
 
 	/**
 	 * The user redirect cookie key.
@@ -26,33 +26,33 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 *
 	 * @var string
 	 */
-	const COOKIE_REDIRECT_KEY = 'openid-connect-generic-redirect';
+	const COOKIE_REDIRECT_KEY = 'pp-sso-redirect';
 
 	/**
 	 * The token refresh info cookie key.
 	 *
 	 * @var string
 	 */
-	const COOKIE_TOKEN_REFRESH_KEY = 'openid-connect-generic-refresh';
+	const COOKIE_TOKEN_REFRESH_KEY = 'pp-sso-refresh';
 
 	/**
 	 * The client object instance.
 	 *
-	 * @var OpenID_Connect_Generic_Client
+	 * @var PP_SSO_Client
 	 */
 	private $client;
 
 	/**
 	 * The settings object instance.
 	 *
-	 * @var OpenID_Connect_Generic_Option_Settings
+	 * @var PP_SSO_Option_Settings
 	 */
 	private $settings;
 
 	/**
 	 * The logger object instance.
 	 *
-	 * @var OpenID_Connect_Generic_Option_Logger
+	 * @var PP_SSO_Option_Logger
 	 */
 	private $logger;
 
@@ -68,11 +68,11 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	/**
 	 * Inject necessary objects and services into the client.
 	 *
-	 * @param OpenID_Connect_Generic_Client          $client   A plugin client object instance.
-	 * @param OpenID_Connect_Generic_Option_Settings $settings A plugin settings object instance.
-	 * @param OpenID_Connect_Generic_Option_Logger   $logger   A plugin logger object instance.
+	 * @param PP_SSO_Client          $client   A plugin client object instance.
+	 * @param PP_SSO_Option_Settings $settings A plugin settings object instance.
+	 * @param PP_SSO_Option_Logger   $logger   A plugin logger object instance.
 	 */
-	public function __construct( OpenID_Connect_Generic_Client $client, OpenID_Connect_Generic_Option_Settings $settings, OpenID_Connect_Generic_Option_Logger $logger ) {
+	public function __construct( PP_SSO_Client $client, PP_SSO_Option_Settings $settings, PP_SSO_Option_Logger $logger ) {
 		$this->client = $client;
 		$this->settings = $settings;
 		$this->logger = $logger;
@@ -81,13 +81,13 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	/**
 	 * Hook the client into WordPress.
 	 *
-	 * @param \OpenID_Connect_Generic_Client          $client   The plugin client instance.
-	 * @param \OpenID_Connect_Generic_Option_Settings $settings The plugin settings instance.
-	 * @param \OpenID_Connect_Generic_Option_Logger   $logger   The plugin logger instance.
+	 * @param \PP_SSO_Client          $client   The plugin client instance.
+	 * @param \PP_SSO_Option_Settings $settings The plugin settings instance.
+	 * @param \PP_SSO_Option_Logger   $logger   The plugin logger instance.
 	 *
-	 * @return \OpenID_Connect_Generic_Client_Wrapper
+	 * @return \PP_SSO_Client_Wrapper
 	 */
-	public static function register( OpenID_Connect_Generic_Client $client, OpenID_Connect_Generic_Option_Settings $settings, OpenID_Connect_Generic_Option_Logger $logger ) {
+	public static function register( PP_SSO_Client $client, PP_SSO_Option_Settings $settings, PP_SSO_Option_Logger $logger ) {
 		$client_wrapper  = new self( $client, $settings, $logger );
 
 		// Integrated logout.
@@ -97,22 +97,27 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		}
 
 		// Alter the requests according to settings.
-		add_filter( 'openid-connect-generic-alter-request', array( $client_wrapper, 'alter_request' ), 10, 2 );
+		add_filter( 'pp-sso-alter-request', array( $client_wrapper, 'alter_request' ), 10, 2 );
 
 		if ( is_admin() ) {
 			/*
 			 * Use the ajax url to handle processing authorization without any html output
 			 * this callback will occur when then IDP returns with an authenticated value
 			 */
-			add_action( 'wp_ajax_openid-connect-authorize', array( $client_wrapper, 'authentication_request_callback' ) );
-			add_action( 'wp_ajax_nopriv_openid-connect-authorize', array( $client_wrapper, 'authentication_request_callback' ) );
+			add_action( 'wp_ajax_pp-sso-authorize', array( $client_wrapper, 'authentication_request_callback' ) );
+			add_action( 'wp_ajax_nopriv_pp-sso-authorize', array( $client_wrapper, 'authentication_request_callback' ) );
 		}
 
 		if ( $settings->alternate_redirect_uri ) {
 			// Provide an alternate route for authentication_request_callback.
-			add_rewrite_rule( '^openid-connect-authorize/?', 'index.php?openid-connect-authorize=1', 'top' );
-			add_rewrite_tag( '%openid-connect-authorize%', '1' );
+			add_rewrite_rule( '^pp-sso-authorize/?', 'index.php?pp-sso-authorize=1', 'top' );
+			add_rewrite_tag( '%pp-sso-authorize%', '1' );
 			add_action( 'parse_request', array( $client_wrapper, 'alternate_redirect_uri_parse_request' ) );
+
+			// Provide an alternate route for pp-sso-subscribe.
+			add_rewrite_rule( '^pp-sso-subscribe/?', 'index.php?pp-sso-subscribe=1', 'top' );
+			add_rewrite_tag( '%pp-sso-subscribe%', '1' );
+			add_action( 'parse_request', array( $client_wrapper, 'newsletter_redirect_uri_parse_request' ) );
 		}
 
 		return $client_wrapper;
@@ -126,9 +131,24 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 * @return void
 	 */
 	public function alternate_redirect_uri_parse_request( $query ) {
-		if ( isset( $query->query_vars['openid-connect-authorize'] ) &&
-			 '1' === $query->query_vars['openid-connect-authorize'] ) {
+		if ( isset( $query->query_vars['pp-sso-authorize'] ) &&
+			 '1' === $query->query_vars['pp-sso-authorize'] ) {
 			$this->authentication_request_callback();
+			exit;
+		}
+	}
+
+	/**
+	 * Implements WordPress parse_request action.
+	 *
+	 * @param WP_Query $query The WordPress query object.
+	 *
+	 * @return void
+	 */
+	public function newsletter_redirect_uri_parse_request( $query ) {
+		if ( isset( $query->query_vars['pp-sso-subscribe'] ) &&
+			 '1' === $query->query_vars['pp-sso-subscribe'] ) {
+			$this->authentication_request_callback( 'enroll' );
 			exit;
 		}
 	}
@@ -177,14 +197,14 @@ class OpenID_Connect_Generic_Client_Wrapper {
 
 		// This hook is being deprecated with the move away from cookies.
 		$redirect_url = apply_filters_deprecated(
-			'openid-connect-generic-cookie-redirect-url',
+			'pp-sso-cookie-redirect-url',
 			array( $redirect_url ),
 			'3.8.2',
-			'openid-connect-generic-client-redirect-to'
+			'pp-sso-client-redirect-to'
 		);
 
 		// This is the new hook to use with the transients version of redirection.
-		return apply_filters( 'openid-connect-generic-client-redirect-to', $redirect_url );
+		return apply_filters( 'pp-sso-client-redirect-to', $redirect_url );
 	}
 
 	/**
@@ -196,17 +216,31 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 */
 	public function get_authentication_url( $atts = array() ) {
 
+		$type = isset( $atts['type'] ) && 'enroll' === $atts['type'] ? 'enroll' : 'login';
+
+		if (
+			( ! $this->settings->enable_login && 'login' === $type ) ||
+			( ! $this->settings->enable_enroll && 'enroll' === $type )
+		) {
+			return '#';
+		}
+
+		// make sure the authentication is enabled.
+		if ( ! $this->settings->{'enable_' . $type} ) {
+			return '';
+		}
+
 		$atts = shortcode_atts(
 			array(
 				'endpoint_login' => $this->settings->endpoint_login,
-				'scope' => $this->settings->scope,
+				'scope' => 'enroll' === $type ? $this->settings->scope_enroll : $this->settings->scope,
 				'client_id' => $this->settings->client_id,
-				'redirect_uri' => $this->client->get_redirect_uri(),
+				'redirect_uri' => $this->client->get_redirect_uri( $type ),
 				'redirect_to' => $this->get_redirect_to(),
 				'acr_values' => $this->settings->acr_values,
 			),
 			$atts,
-			'openid_connect_generic_auth_url'
+			'privacy_portal_sso_auth_url'
 		);
 
 		// Validate the redirect to value to prevent a redirection attack.
@@ -235,7 +269,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			rawurlencode( $atts['acr_values'] )
 		);
 
-		$url = apply_filters( 'openid-connect-generic-auth-url', $url );
+		$url = apply_filters( 'pp-sso-auth-url', $url );
 		$this->logger->log( $url, 'make_authentication_url' );
 		return $url;
 	}
@@ -251,7 +285,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		}
 
 		$user_id = wp_get_current_user()->ID;
-		$last_token_response = get_user_meta( $user_id, 'openid-connect-generic-last-token-response', true );
+		$last_token_response = get_user_meta( $user_id, 'pp-sso-last-token-response', true );
 
 		if ( ! empty( $last_token_response['expires_in'] ) && ! empty( $last_token_response['time'] ) ) {
 			/*
@@ -297,7 +331,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		// Capture the time so that access token expiration can be calculated later.
 		$token_response[] = time();
 
-		update_user_meta( $user_id, 'openid-connect-generic-last-token-response', $token_response );
+		update_user_meta( $user_id, 'pp-sso-last-token-response', $token_response );
 		$this->save_refresh_token( $manager, $token, $token_response );
 	}
 
@@ -306,17 +340,25 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 * error code
 	 *
 	 * @param WP_Error $error A WordPress error object.
+	 * @param string   $type can be set to 'login' for login requests or 'enroll' for newsletter subscriptions.
 	 *
 	 * @return void
 	 */
-	public function error_redirect( $error ) {
+	public function error_redirect( $error, $type = 'login' ) {
 		$this->logger->log( $error );
+
+		$redirect_url = wp_login_url();
+		if ( 'enroll' === $type && '' !== $this->settings->newsletter_on_failure ) {
+			$redirect_url = get_permalink(
+				intval( $this->settings->newsletter_on_failure )
+			);
+		}
 
 		// Redirect user back to login page.
 		wp_redirect(
-			wp_login_url() .
-			'?login-error=' . $error->get_error_code() .
-			'&message=' . urlencode( $error->get_error_message() )
+			$redirect_url .
+			"?pp-{$type}-error=" . $error->get_error_code() .
+			'&pp-message=' . rawurlencode( $error->get_error_message() )
 		);
 		exit;
 	}
@@ -338,7 +380,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 * @return array<string>|bool
 	 */
 	public function update_allowed_redirect_hosts( $allowed ) {
-		$host = parse_url( $this->settings->endpoint_end_session, PHP_URL_HOST );
+		$host = wp_parse_url( $this->settings->endpoint_end_session, PHP_URL_HOST );
 		if ( ! $host ) {
 			return false;
 		}
@@ -358,7 +400,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 */
 	public function get_end_session_logout_redirect_url( $redirect_url, $requested_redirect_to, $user ) {
 		$url = $this->settings->endpoint_end_session;
-		$query = parse_url( $url, PHP_URL_QUERY );
+		$query = wp_parse_url( $url, PHP_URL_QUERY );
 		$url .= $query ? '&' : '?';
 
 		// Prevent redirect back to the IDP when logging out in auto mode.
@@ -367,16 +409,16 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			$redirect_url = home_url();
 		}
 
-		$token_response = $user->get( 'openid-connect-generic-last-token-response' );
+		$token_response = $user->get( 'pp-sso-last-token-response' );
 		if ( ! $token_response ) {
 			// Happens if non-openid login was used.
 			return $redirect_url;
-		} else if ( ! parse_url( $redirect_url, PHP_URL_HOST ) ) {
+		} else if ( ! wp_parse_url( $redirect_url, PHP_URL_HOST ) ) {
 			// Convert to absolute url if needed, site_url() to be friendly with non-standard (Bedrock) layout.
 			$redirect_url = site_url( $redirect_url );
 		}
 
-		$claim = $user->get( 'openid-connect-generic-last-id-token-claim' );
+		$claim = $user->get( 'pp-sso-last-id-token-claim' );
 
 		if ( isset( $claim['iss'] ) && 'https://accounts.google.com' == $claim['iss'] ) {
 			/*
@@ -414,40 +456,79 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	}
 
 	/**
+	 * Filter newsletter lists by namespace
+	 *
+	 * @param string $namespace A particular newsletter plugin namespace.
+	 *
+	 * @return array
+	 */
+	public function get_lists_by_namespace( $namespace ) {
+		return array_map(
+			function ( $item ) use ( $namespace ) {
+				// remove the prefix and the '::'.
+				return substr( $item, strlen( $namespace ) + 2 );
+			},
+			// filter by namespace.
+			array_filter(
+				$this->settings->newsletter_lists,
+				function ( $item ) use ( $namespace ) {
+					return strpos( $item, $namespace ) === 0;
+				}
+			)
+		);
+	}
+
+	/**
 	 * Control the authentication and subsequent authorization of the user when
 	 * returning from the IDP.
 	 *
+	 * @param string $type can be set to 'login' for login requests or 'enroll' for newsletter subscriptions.
+	 *
 	 * @return void
 	 */
-	public function authentication_request_callback() {
+	public function authentication_request_callback( $type = 'login' ) {
 		$client = $this->client;
+
+		if ( ! $this->settings->enable_login && 'login' === $type ) {
+			$this->error_redirect(
+				new WP_Error( 'login-unsupported', __( 'OAUTH Login not supported. Please contact site administrator.', 'privacy-portal-sso' ), $type ),
+				$type
+			);
+		}
+
+		if ( 'enroll' === $type && ( ! $this->settings->enable_enroll || empty( $this->settings->newsletter_lists ) ) ) {
+			$this->error_redirect(
+				new WP_Error( 'subscribe-unsupported', __( 'Anonymous Subscriptions not configured. Please contact site administrator.', 'privacy-portal-sso' ), $type ),
+				$type
+			);
+		}
 
 		// Start the authentication flow.
 		$authentication_request = $client->validate_authentication_request( $_GET );
 
 		if ( is_wp_error( $authentication_request ) ) {
-			$this->error_redirect( $authentication_request );
+			$this->error_redirect( $authentication_request, $type );
 		}
 
 		// Retrieve the authentication code from the authentication request.
 		$code = $client->get_authentication_code( $authentication_request );
 
 		if ( is_wp_error( $code ) ) {
-			$this->error_redirect( $code );
+			$this->error_redirect( $code, $type );
 		}
 
 		// Retrieve the authentication state from the authentication request.
 		$state = $client->get_authentication_state( $authentication_request );
 
 		if ( is_wp_error( $state ) ) {
-			$this->error_redirect( $state );
+			$this->error_redirect( $state, $type );
 		}
 
 		// Attempting to exchange an authorization code for an authentication token.
-		$token_result = $client->request_authentication_token( $code );
+		$token_result = $client->request_authentication_token( $code, $type );
 
 		if ( is_wp_error( $token_result ) ) {
-			$this->error_redirect( $token_result );
+			$this->error_redirect( $token_result, $type );
 		}
 
 		// Get the decoded response from the authentication request result.
@@ -457,14 +538,14 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		$token_response = apply_filters( 'openid-connect-modify-token-response-before-validation', $token_response );
 
 		if ( is_wp_error( $token_response ) ) {
-			$this->error_redirect( $token_response );
+			$this->error_redirect( $token_response, $type );
 		}
 
 		// Ensure the that response contains required information.
 		$valid = $client->validate_token_response( $token_response );
 
 		if ( is_wp_error( $valid ) ) {
-			$this->error_redirect( $valid );
+			$this->error_redirect( $valid, $type );
 		}
 
 		/**
@@ -478,14 +559,14 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		$id_token_claim = apply_filters( 'openid-connect-modify-id-token-claim-before-validation', $id_token_claim );
 
 		if ( is_wp_error( $id_token_claim ) ) {
-			$this->error_redirect( $id_token_claim );
+			$this->error_redirect( $id_token_claim, $type );
 		}
 
 		// Validate our id_token has required values.
 		$valid = $client->validate_id_token_claim( $id_token_claim );
 
 		if ( is_wp_error( $valid ) ) {
-			$this->error_redirect( $valid );
+			$this->error_redirect( $valid, $type );
 		}
 
 		// If userinfo endpoint is set, exchange the token_response for a user_claim.
@@ -496,14 +577,110 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		}
 
 		if ( is_wp_error( $user_claim ) ) {
-			$this->error_redirect( $user_claim );
+			$this->error_redirect( $user_claim, $type );
 		}
 
 		// Validate our user_claim has required values.
 		$valid = $client->validate_user_claim( $user_claim, $id_token_claim );
 
 		if ( is_wp_error( $valid ) ) {
-			$this->error_redirect( $valid );
+			$this->error_redirect( $valid, $type );
+		}
+
+		// handle newsletter subscriptions.
+		if ( 'enroll' === $type ) {
+			// This is not a login use case, we should just handle this as a newsletter subscription.
+
+			try {
+				$subscriber = array();
+				$email = $this->get_email_from_claim( $user_claim, true );
+				if ( is_wp_error( $email ) || empty( $email ) ) {
+					$this->error_redirect(
+						new WP_Error( 'email-claim-required', __( 'Email claim required.', 'privacy-portal-sso' ), $user_claim ),
+						$type
+					);
+				}
+
+				// Track the status.
+				$successfully_subscribed = false;
+
+				$subscription_options = array(
+					'double_opt_in' => $this->settings->newsletter_double_opt_in,
+				);
+
+				if ( PP_SSO_Ext_MailPoet_Plugin::is_detected() ) {
+					$mailpoet_lists = $this->get_lists_by_namespace( PP_SSO_Ext_MailPoet_Plugin::NAMESPACE );
+
+					$mailpoet_result = ( PP_SSO_Ext_MailPoet_Plugin::handle_subscription( $email, $mailpoet_lists, $subscription_options ) );
+					if ( is_wp_error( $mailpoet_result ) ) {
+						$this->error_redirect( $mailpoet_result, $type );
+					}
+					$successfully_subscribed = $mailpoet_result;
+				}
+
+				if ( PP_SSO_Ext_MC4WP_Plugin::is_detected() ) {
+					$mailchimp_lists = $this->get_lists_by_namespace( PP_SSO_Ext_MC4WP_Plugin::NAMESPACE );
+
+					$mailchimp_result = ( PP_SSO_Ext_MC4WP_Plugin::handle_subscription( $email, $mailchimp_lists, $subscription_options ) );
+					if ( is_wp_error( $mailchimp_result ) ) {
+						$this->error_redirect( $mailchimp_result, $type );
+					}
+					$successfully_subscribed = $successfully_subscribed || $mailchimp_result;
+				}
+
+				if ( PP_SSO_Ext_Newsletter_Plugin::is_detected() ) {
+					$newsletter_lists = $this->get_lists_by_namespace( PP_SSO_Ext_Newsletter_Plugin::NAMESPACE );
+
+					$newsletter_result = ( PP_SSO_Ext_Newsletter_Plugin::handle_subscription( $email, $newsletter_lists, $subscription_options ) );
+					if ( is_wp_error( $newsletter_result ) ) {
+						$this->error_redirect( $newsletter_result, $type );
+					}
+					$successfully_subscribed = $successfully_subscribed || $newsletter_result;
+				}
+
+				if ( PP_SSO_Ext_ConvertKit_Plugin::is_detected() ) {
+					$convertkit_lists = $this->get_lists_by_namespace( PP_SSO_Ext_ConvertKit_Plugin::NAMESPACE );
+
+					$convertkit_result = ( PP_SSO_Ext_ConvertKit_Plugin::handle_subscription( $email, $convertkit_lists, $subscription_options ) );
+					if ( is_wp_error( $convertkit_result ) ) {
+						$this->error_redirect( $convertkit_result, $type );
+					}
+					$successfully_subscribed = $successfully_subscribed || $convertkit_result;
+				}
+
+				if ( ! $successfully_subscribed ) {
+					$this->error_redirect(
+						new WP_Error( 'subscription-failed', __( 'Failed to subscribe to Newsletter.', 'privacy-portal-sso' ), $user_claim ),
+						$type
+					);
+				}
+
+				// Default redirect to the homepage.
+				$redirect_url = home_url();
+				// Redirect user according to redirect set in state.
+				$state_object = get_transient( 'pp-sso-state--' . $state );
+				// Get the redirect URL stored with the corresponding authentication request state.
+				if ( ! empty( $state_object ) && ! empty( $state_object[ $state ] ) && ! empty( $state_object[ $state ]['redirect_to'] ) ) {
+					$redirect_url = $state_object[ $state ]['redirect_to'];
+				}
+				// Provide backwards compatibility for customization using the deprecated cookie method.
+				if ( ! empty( $_COOKIE[ self::COOKIE_REDIRECT_KEY ] ) ) {
+					$redirect_url = esc_url_raw( wp_unslash( $_COOKIE[ self::COOKIE_REDIRECT_KEY ] ) );
+				}
+				// Admin defined page.
+				if ( ! empty( $this->settings->newsletter_on_success ) && '' !== $this->settings->newsletter_on_success ) {
+					$redirect_url = get_permalink( intval( $this->settings->newsletter_on_success ) );
+				}
+				// redirect back main page.
+				wp_redirect( $redirect_url );
+				exit;
+
+			} catch ( \Exception $e ) {
+				$this->error_redirect(
+					new WP_Error( 'subscription-temp-failed', __( 'Failed to subscribe. Please try again later.', 'privacy-portal-sso' ), $user_claim ),
+					$type
+				);
+			}
 		}
 
 		/**
@@ -520,10 +697,10 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			if ( $this->settings->link_existing_users || $this->settings->create_if_does_not_exist ) {
 				$user = $this->create_new_user( $subject_identity, $user_claim );
 				if ( is_wp_error( $user ) ) {
-					$this->error_redirect( $user );
+					$this->error_redirect( $user, $type );
 				}
 			} else {
-				$this->error_redirect( new WP_Error( 'identity-not-map-existing-user', __( 'User identity is not linked to an existing WordPress user.', 'daggerhart-openid-connect-generic' ), $user_claim ) );
+				$this->error_redirect( new WP_Error( 'identity-not-map-existing-user', __( 'User identity is not linked to an existing WordPress user.', 'privacy-portal-sso' ), $user_claim ), $type );
 			}
 		}
 
@@ -531,7 +708,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		$valid = $this->validate_user( $user );
 
 		if ( is_wp_error( $valid ) ) {
-			$this->error_redirect( $valid );
+			$this->error_redirect( $valid, $type );
 		}
 
 		// Login the found / created user.
@@ -543,14 +720,14 @@ class OpenID_Connect_Generic_Client_Wrapper {
 
 		// Allow plugins / themes to take action once a user is logged in.
 		$start_time = microtime( true );
-		do_action( 'openid-connect-generic-user-logged-in', $user );
+		do_action( 'pp-sso-user-logged-in', $user );
 		$end_time = microtime( true );
-		$this->logger->log( 'openid-connect-generic-user-logged-in', 'do_action', $end_time - $start_time );
+		$this->logger->log( 'pp-sso-user-logged-in', 'do_action', $end_time - $start_time );
 
 		// Default redirect to the homepage.
 		$redirect_url = home_url();
 		// Redirect user according to redirect set in state.
-		$state_object = get_transient( 'openid-connect-generic-state--' . $state );
+		$state_object = get_transient( 'pp-sso-state--' . $state );
 		// Get the redirect URL stored with the corresponding authentication request state.
 		if ( ! empty( $state_object ) && ! empty( $state_object[ $state ] ) && ! empty( $state_object[ $state ]['redirect_to'] ) ) {
 			$redirect_url = $state_object[ $state ]['redirect_to'];
@@ -563,7 +740,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 
 		// Only do redirect-user-back action hook when the plugin is configured for it.
 		if ( $this->settings->redirect_user_back ) {
-			do_action( 'openid-connect-generic-redirect-user-back', $redirect_url, $user );
+			do_action( 'pp-sso-redirect-user-back', $redirect_url, $user );
 		}
 
 		wp_redirect( $redirect_url );
@@ -581,7 +758,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	public function validate_user( $user ) {
 		// Ensure the found user is a real WP_User.
 		if ( ! is_a( $user, 'WP_User' ) || ! $user->exists() ) {
-			return new WP_Error( 'invalid-user', __( 'Invalid user.', 'daggerhart-openid-connect-generic' ), $user );
+			return new WP_Error( 'invalid-user', __( 'Invalid user.', 'privacy-portal-sso' ), $user );
 		}
 
 		return true;
@@ -639,9 +816,9 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		}
 
 		// Store the tokens for future reference.
-		update_user_meta( $user->ID, 'openid-connect-generic-last-token-response', $token_response );
-		update_user_meta( $user->ID, 'openid-connect-generic-last-id-token-claim', $id_token_claim );
-		update_user_meta( $user->ID, 'openid-connect-generic-last-user-claim', $user_claim );
+		update_user_meta( $user->ID, 'pp-sso-last-token-response', $token_response );
+		update_user_meta( $user->ID, 'pp-sso-last-id-token-claim', $id_token_claim );
+		update_user_meta( $user->ID, 'pp-sso-last-user-claim', $user_claim );
 
 		return $user_claim;
 	}
@@ -659,14 +836,14 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 */
 	public function login_user( $user, $token_response, $id_token_claim, $user_claim, $subject_identity ): void {
 		// Store the tokens for future reference.
-		update_user_meta( $user->ID, 'openid-connect-generic-last-token-response', $token_response );
-		update_user_meta( $user->ID, 'openid-connect-generic-last-id-token-claim', $id_token_claim );
-		update_user_meta( $user->ID, 'openid-connect-generic-last-user-claim', $user_claim );
+		update_user_meta( $user->ID, 'pp-sso-last-token-response', $token_response );
+		update_user_meta( $user->ID, 'pp-sso-last-id-token-claim', $id_token_claim );
+		update_user_meta( $user->ID, 'pp-sso-last-user-claim', $user_claim );
 		// Allow plugins / themes to take action using current claims on existing user (e.g. update role).
-		do_action( 'openid-connect-generic-update-user-using-current-claim', $user, $user_claim );
+		do_action( 'pp-sso-update-user-using-current-claim', $user, $user_claim );
 
 		// Determine the amount of days before the cookie expires.
-		$remember_me = apply_filters( 'openid-connect-generic-remember-me', false, $user, $token_response, $id_token_claim, $user_claim, $subject_identity );
+		$remember_me = apply_filters( 'pp-sso-remember-me', false, $user, $token_response, $id_token_claim, $user_claim, $subject_identity );
 		$wp_expiration_days = $remember_me ? 14 : 2;
 
 		// Create the WP session, so we know its token.
@@ -712,12 +889,12 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 * @return false|WP_User
 	 */
 	public function get_user_by_identity( $subject_identity ) {
-		// Look for user by their openid-connect-generic-subject-identity value.
+		// Look for user by their pp-sso-subject-identity value.
 		$user_query = new WP_User_Query(
 			array(
 				'meta_query' => array(
 					array(
-						'key'   => 'openid-connect-generic-subject-identity',
+						'key'   => 'pp-sso-subject-identity',
 						'value' => $subject_identity,
 					),
 				),
@@ -763,7 +940,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		}
 		if ( empty( $desired_username ) ) {
 			// Nothing to build a name from.
-			return new WP_Error( 'no-username', __( 'No appropriate username found.', 'daggerhart-openid-connect-generic' ), $user_claim );
+			return new WP_Error( 'no-username', __( 'No appropriate username found.', 'privacy-portal-sso' ), $user_claim );
 		}
 
 		// Don't use the full email address for a username.
@@ -773,7 +950,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		$sanitized_username = sanitize_user( $desired_username, true );
 		if ( empty( $sanitized_username ) ) {
 			// translators: %1$s is the santitized version of the username from the IDP.
-			return new WP_Error( 'username-sanitization-failed', sprintf( __( 'Username %1$s could not be sanitized.', 'daggerhart-openid-connect-generic' ), $desired_username ), $desired_username );
+			return new WP_Error( 'username-sanitization-failed', sprintf( __( 'Username %1$s could not be sanitized.', 'privacy-portal-sso' ), $desired_username ), $desired_username );
 		}
 
 		return $sanitized_username;
@@ -795,7 +972,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 
 		if ( empty( $desired_nickname ) ) {
 			// translators: %1$s is the configured User Claim nickname key.
-			return new WP_Error( 'no-nickname', sprintf( __( 'No nickname found in user claim using key: %1$s.', 'daggerhart-openid-connect-generic' ), $this->settings->nickname_key ), $this->settings->nickname_key );
+			return new WP_Error( 'no-nickname', sprintf( __( 'No nickname found in user claim using key: %1$s.', 'privacy-portal-sso' ), $this->settings->nickname_key ), $this->settings->nickname_key );
 		}
 
 		return $desired_nickname;
@@ -892,7 +1069,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 					if ( $error_on_missing_key ) {
 						return new WP_Error(
 							'incomplete-user-claim',
-							__( 'User claim incomplete.', 'daggerhart-openid-connect-generic' ),
+							__( 'User claim incomplete.', 'privacy-portal-sso' ),
 							array(
 								'message'    => 'Unable to find key: ' . $key . ' in user_claim',
 								'hint'       => 'Verify OpenID Scope includes a scope with the attributes you need',
@@ -951,7 +1128,6 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 */
 	public function create_new_user( $subject_identity, $user_claim ) {
 		$start_time = microtime( true );
-		$user_claim = apply_filters( 'openid-connect-generic-alter-user-claim', $user_claim );
 
 		// Default username & email to the subject identity.
 		$username       = $subject_identity;
@@ -995,7 +1171,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 
 			// Make sure we didn't get an error.
 			if ( is_wp_error( $user_claim_result ) ) {
-				return new WP_Error( 'bad-user-claim-result', __( 'Bad user claim result.', 'daggerhart-openid-connect-generic' ), $user_claim_result );
+				return new WP_Error( 'bad-user-claim-result', __( 'Bad user claim result.', 'privacy-portal-sso' ), $user_claim_result );
 			}
 
 			$user_claim = json_decode( $user_claim_result['body'], true );
@@ -1047,7 +1223,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			}
 			if ( ! empty( $uid ) ) {
 				$user = $this->update_existing_user( $uid, $subject_identity );
-				do_action( 'openid-connect-generic-update-user-using-current-claim', $user, $user_claim );
+				do_action( 'pp-sso-update-user-using-current-claim', $user, $user_claim );
 				$end_time = microtime( true );
 				$this->logger->log( "Existing user updated: {$user->user_login} ($uid)", __METHOD__, $end_time - $start_time );
 				return $user;
@@ -1058,10 +1234,10 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		 * Allow other plugins / themes to determine authorization of new accounts
 		 * based on the returned user claim.
 		 */
-		$create_user = apply_filters( 'openid-connect-generic-user-creation-test', $this->settings->create_if_does_not_exist, $user_claim );
+		$create_user = apply_filters( 'pp-sso-user-creation-test', $this->settings->create_if_does_not_exist, $user_claim );
 
 		if ( ! $create_user ) {
-			return new WP_Error( 'cannot-authorize', __( 'Can not authorize.', 'daggerhart-openid-connect-generic' ), $create_user );
+			return new WP_Error( 'cannot-authorize', __( 'Can not authorize.', 'privacy-portal-sso' ), $create_user );
 		}
 
 		// Copy the username for incrementing.
@@ -1083,28 +1259,28 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			'first_name' => isset( $user_claim['given_name'] ) ? $user_claim['given_name'] : '',
 			'last_name' => isset( $user_claim['family_name'] ) ? $user_claim['family_name'] : '',
 		);
-		$user_data = apply_filters( 'openid-connect-generic-alter-user-data', $user_data, $user_claim );
+		$user_data = apply_filters( 'pp-sso-alter-user-data', $user_data, $user_claim );
 
 		// Create the new user.
 		$uid = wp_insert_user( $user_data );
 
 		// Make sure we didn't fail in creating the user.
 		if ( is_wp_error( $uid ) ) {
-			return new WP_Error( 'failed-user-creation', __( 'Failed user creation.', 'daggerhart-openid-connect-generic' ), $uid );
+			return new WP_Error( 'failed-user-creation', __( 'Failed user creation.', 'privacy-portal-sso' ), $uid );
 		}
 
 		// Retrieve our new user.
 		$user = get_user_by( 'id', $uid );
 
 		// Save some meta data about this new user for the future.
-		add_user_meta( $user->ID, 'openid-connect-generic-subject-identity', (string) $subject_identity, true );
+		add_user_meta( $user->ID, 'pp-sso-subject-identity', (string) $subject_identity, true );
 
 		// Log the results.
 		$end_time = microtime( true );
 		$this->logger->log( "New user created: {$user->user_login} ($uid)", __METHOD__, $end_time - $start_time );
 
 		// Allow plugins / themes to take action on new user creation.
-		do_action( 'openid-connect-generic-user-create', $user, $user_claim );
+		do_action( 'pp-sso-user-create', $user, $user_claim );
 
 		return $user;
 	}
@@ -1119,10 +1295,10 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 */
 	public function update_existing_user( $uid, $subject_identity ) {
 		// Add the OpenID Connect meta data.
-		update_user_meta( $uid, 'openid-connect-generic-subject-identity', strval( $subject_identity ) );
+		update_user_meta( $uid, 'pp-sso-subject-identity', strval( $subject_identity ) );
 
 		// Allow plugins / themes to take action on user update.
-		do_action( 'openid-connect-generic-user-update', $uid );
+		do_action( 'pp-sso-user-update', $uid );
 
 		// Return our updated user.
 		return get_user_by( 'id', $uid );

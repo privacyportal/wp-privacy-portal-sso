@@ -2,19 +2,19 @@
 /**
  * WordPress options handling class.
  *
- * @package   OpenID_Connect_Generic
+ * @package   Privacy_Portal_SSO
  * @category  Settings
- * @author    Jonathan Daggerhart <jonathan@daggerhart.com>
- * @copyright 2015-2023 daggerhart
+ * @author    Privacy Portal <support@privacyportal.org> (Forked from Jonathan Daggerhart <jonathan@daggerhart.com>)
+ * @copyright 2015-2023 daggerhart, 2024 Privacy Portal
  * @license   http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 
 /**
- * OpenId_Connect_Generic_Option_Settings class.
+ * PP_SSO_Option_Settings class.
  *
  * WordPress options handling.
  *
- * @package OpenID_Connect_Generic
+ * @package Privacy_Portal_SSO
  * @category  Settings
  *
  * Legacy Settings:
@@ -28,7 +28,8 @@
  * @property string $login_type           How the client (login form) should provide login options.
  * @property string $client_id            The ID the client will be recognized as when connecting the to Identity provider server.
  * @property string $client_secret        The secret key the IDP server expects from the client.
- * @property string $scope                The list of scopes this client should access.
+ * @property string $scope                The list of scopes this client should access during Login.
+ * @property string $scope_enroll         The list of scopes this client should access during Anonymous Subscriptions.
  * @property string $endpoint_login       The IDP authorization endpoint URL.
  * @property string $endpoint_userinfo    The IDP User information endpoint URL.
  * @property string $endpoint_token       The IDP token validation endpoint URL.
@@ -48,6 +49,7 @@
  *
  * Plugin Settings:
  *
+ * @property bool $enable_login             The flag to enable Sign In With Privacy Portal.
  * @property bool $enforce_privacy          The flag to indicates whether a user us required to be authenticated to access the site.
  * @property bool $alternate_redirect_uri   The flag to indicate whether to use the alternative redirect URI.
  * @property bool $token_refresh_enable     The flag whether to support refresh tokens by IDPs.
@@ -57,15 +59,23 @@
  * @property bool $redirect_on_logout       The flag to indicate whether to redirect to the login screen on session expiration.
  * @property bool $enable_logging           The flag to enable/disable logging.
  * @property int  $log_limit                The maximum number of log entries to keep.
+ *
+ * Newsletter Settings:
+ *
+ * @property bool   $enable_enroll            The flag to enable Anonymous Subscriptions.
+ * @property array  $newsletter_lists         The Newsletter lists to subscribe the user to when using Anonymous Subscriptions.
+ * @property bool   $newsletter_double_opt_in The flag to indicate whether to enable double opt in when using Anonymous Subscriptions.
+ * @property string $newsletter_on_success    The page to redirect_to after Anonymous Subscription success.
+ * @property string $newsletter_on_failure    The page to redirect_to after Anonymous Subscription failure.
  */
-class OpenID_Connect_Generic_Option_Settings {
+class PP_SSO_Option_Settings {
 
 	/**
 	 * WordPress option name/key.
 	 *
 	 * @var string
 	 */
-	const OPTION_NAME = 'openid_connect_generic_settings';
+	const OPTION_NAME = 'privacy_portal_sso_settings';
 
 	/**
 	 * Stored option values array.
@@ -95,6 +105,7 @@ class OpenID_Connect_Generic_Option_Settings {
 		'endpoint_userinfo'         => 'OIDC_ENDPOINT_USERINFO_URL',
 		'login_type'                => 'OIDC_LOGIN_TYPE',
 		'scope'                     => 'OIDC_CLIENT_SCOPE',
+		'scope_enroll'              => 'OIDC_CLIENT_SCOPE_ENROLL',
 		'create_if_does_not_exist'  => 'OIDC_CREATE_IF_DOES_NOT_EXIST',
 		'enforce_privacy'           => 'OIDC_ENFORCE_PRIVACY',
 		'link_existing_users'       => 'OIDC_LINK_EXISTING_USERS',
@@ -103,6 +114,16 @@ class OpenID_Connect_Generic_Option_Settings {
 		'acr_values'                => 'OIDC_ACR_VALUES',
 		'enable_logging'            => 'OIDC_ENABLE_LOGGING',
 		'log_limit'                 => 'OIDC_LOG_LIMIT',
+		'no_sslverify'              => 'OIDC_NO_SSL_VERIFY',
+		'http_request_timeout'      => 'OIDC_HTTP_REQUEST_TIMEOUT',
+		'identity_key'              => 'OIDC_IDENTITY_KEY',
+		'nickname_key'              => 'OIDC_NICKNAME_KEY',
+		'email_format'              => 'OIDC_EMAIL_FORMAT',
+		'displayname_format'        => 'OIDC_DISPLAY_NAME_FORMAT',
+		'identify_with_username'    => 'OIDC_IDENTIFY_WITH_USERNAME',
+		'state_time_limit'          => 'OIDC_STATE_TIME_LIMIT',
+		'alternate_redirect_uri'    => 'OIDC_ALTERNATE_REDIRECT_URI',
+		'token_refresh_enable'      => 'OIDC_TOKEN_REFRESH_ENABLE',
 	);
 
 	/**

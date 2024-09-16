@@ -55,6 +55,7 @@ module.exports = function (grunt) {
 				src: [
 					'**',
 					'!*.xml', '!*.log', //any config/log files
+					'!**/*.ignore', //any ignored files
 					'!node_modules/**', '!Gruntfile.js', '!package.json', '!package-lock.json', //npm/Grunt
 					'!.wordpress-org/**', //wp-org assets
 					'!dist/**', //build directory
@@ -68,8 +69,9 @@ module.exports = function (grunt) {
 					'!README.md',
 					'!HOWTO.md',
 					'!phpcs.xml', '!phpcs.xml.dist', '!phpstan.neon.dist', '!grumphp.yml.dist', // CodeSniffer Configuration.
-					'!docker-compose.override.yml', // Local Docker Development configuration.
+					'!docker-compose.yml', '!docker-compose.override.yml', // Local Docker Development configuration.
 					'!codecov.yml', // Code coverage configuration.
+					'!wp-cli.yml', // Local Development cli
 					'!tools/**', // Local Development/Build tools configuration.
 				],
 				dest: 'dist/',
@@ -81,7 +83,7 @@ module.exports = function (grunt) {
 
 		addtextdomain: {
 			options: {
-				textdomain: 'daggerhart-openid-connect-generic',    // Project text domain.
+				textdomain: 'privacy-portal-sso',    // Project text domain.
 			},
 			update_all_domains: {
 				options: {
@@ -113,11 +115,11 @@ module.exports = function (grunt) {
 						'vendor/.*', 							//composer
 						'tools/.*'
 					],                                // List of files or directories to ignore.
-					mainFile: 'openid-connect-generic.php',                     // Main project file.
-					potFilename: 'openid-connect-generic.pot',                  // Name of the POT file.
+					mainFile: 'privacy-portal-sso.php',                     // Main project file.
+					potFilename: 'privacy-portal-sso.pot',                  // Name of the POT file.
 					potHeaders: {
 						poedit: true,                   // Includes common Poedit headers.
-						'report-msgid-bugs-to': 'https://github.com/daggerhart/openid-connect-generic/issues',
+						'report-msgid-bugs-to': 'https://github.com/privacyportal/wp-privacy-portal-sso/issues',
 						'x-poedit-keywordslist': true   // Include a list of all possible gettext functions.
 					},                                // Headers to add to the generated POT file.
 					type: 'wp-plugin',                // Type of project (wp-plugin or wp-theme).
@@ -145,7 +147,7 @@ module.exports = function (grunt) {
 
 		checktextdomain: {
 			options: {
-				text_domain: 'daggerhart-openid-connect-generic',
+				text_domain: 'privacy-portal-sso',
 				keywords: [
 					'__:1,2d',
 					'_e:1,2d',
@@ -210,6 +212,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('readme', ['wp_readme_to_markdown']);
 	grunt.registerTask('test', ['checktextdomain', 'phpunit']);
 	grunt.registerTask('build', ['gitinfo', 'i18n', 'readme']);
+	grunt.registerTask('dev-release', ['clean', 'copy']);
 	grunt.registerTask('release', ['checkbranch:HEAD', 'checkrepo', 'gitinfo', 'checktextdomain', 'clean', 'copy']);
 
 };

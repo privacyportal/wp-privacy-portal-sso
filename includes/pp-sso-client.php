@@ -1,73 +1,82 @@
 <?php
 /**
- * Plugin OIDC/oAuth client class.
+ * Plugin OIDC/OAUTH client class.
  *
- * @package   OpenID_Connect_Generic
+ * @package   Privacy_Portal_SSO
  * @category  Authentication
- * @author    Jonathan Daggerhart <jonathan@daggerhart.com>
- * @copyright 2015-2020 daggerhart
+ * @author    Privacy Portal <support@privacyportal.org> (Forked from Jonathan Daggerhart <jonathan@daggerhart.com>)
+ * @copyright 2015-2020 daggerhart, 2024 Privacy Portal
  * @license   http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 
 /**
- * OpenID_Connect_Generic_Client class.
+ * PP_SSO_Client class.
  *
- * Plugin OIDC/oAuth client class.
+ * Plugin OIDC/OAUTH client class.
  *
- * @package  OpenID_Connect_Generic
+ * @package  Privacy_Portal_SSO
  * @category Authentication
  */
-class OpenID_Connect_Generic_Client {
+class PP_SSO_Client {
 
 	/**
-	 * The OIDC/oAuth client ID.
+	 * The OIDC/OAUTH client ID.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::client_id
+	 * @see PP_SSO_Option_Settings::client_id
 	 *
 	 * @var string
 	 */
 	private $client_id;
 
 	/**
-	 * The OIDC/oAuth client secret.
+	 * The OIDC/OAUTH client secret.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::client_secret
+	 * @see PP_SSO_Option_Settings::client_secret
 	 *
 	 * @var string
 	 */
 	private $client_secret;
 
 	/**
-	 * The OIDC/oAuth scopes.
+	 * The OIDC/OAUTH scopes (used for Login).
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::scope
+	 * @see PP_SSO_Option_Settings::scope
 	 *
 	 * @var string
 	 */
 	private $scope;
 
 	/**
-	 * The OIDC/oAuth authorization endpoint URL.
+	 * The OIDC/OAUTH scopes (used for Anonymous Subscriptions).
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::endpoint_login
+	 * @see PP_SSO_Option_Settings::scope_enroll
+	 *
+	 * @var string
+	 */
+	private $scope_enroll;
+
+	/**
+	 * The OIDC/OAUTH authorization endpoint URL.
+	 *
+	 * @see PP_SSO_Option_Settings::endpoint_login
 	 *
 	 * @var string
 	 */
 	private $endpoint_login;
 
 	/**
-	 * The OIDC/oAuth User Information endpoint URL.
+	 * The OIDC/OAUTH User Information endpoint URL.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::endpoint_userinfo
+	 * @see PP_SSO_Option_Settings::endpoint_userinfo
 	 *
 	 * @var string
 	 */
 	private $endpoint_userinfo;
 
 	/**
-	 * The OIDC/oAuth token validation endpoint URL.
+	 * The OIDC/OAUTH token validation endpoint URL.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::endpoint_token
+	 * @see PP_SSO_Option_Settings::endpoint_token
 	 *
 	 * @var string
 	 */
@@ -76,16 +85,25 @@ class OpenID_Connect_Generic_Client {
 	/**
 	 * The login flow "ajax" endpoint URI.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::redirect_uri
+	 * @see PP_SSO_Option_Settings::redirect_uri
 	 *
 	 * @var string
 	 */
 	private $redirect_uri;
 
 	/**
+	 * The login flow "ajax" endpoint URI.
+	 *
+	 * @see PP_SSO_Option_Settings::subscription_redirect_uri
+	 *
+	 * @var string
+	 */
+	private $subscription_redirect_uri;
+
+	/**
 	 * The specifically requested authentication contract at the IDP
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::acr_values
+	 * @see PP_SSO_Option_Settings::acr_values
 	 *
 	 * @var string
 	 */
@@ -94,7 +112,7 @@ class OpenID_Connect_Generic_Client {
 	/**
 	 * The state time limit. States are only valid for 3 minutes.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::state_time_limit
+	 * @see PP_SSO_Option_Settings::state_time_limit
 	 *
 	 * @var int
 	 */
@@ -103,32 +121,36 @@ class OpenID_Connect_Generic_Client {
 	/**
 	 * The logger object instance.
 	 *
-	 * @var OpenID_Connect_Generic_Option_Logger
+	 * @var PP_SSO_Option_Logger
 	 */
 	private $logger;
 
 	/**
 	 * Client constructor.
 	 *
-	 * @param string                               $client_id         @see OpenID_Connect_Generic_Option_Settings::client_id for description.
-	 * @param string                               $client_secret     @see OpenID_Connect_Generic_Option_Settings::client_secret for description.
-	 * @param string                               $scope             @see OpenID_Connect_Generic_Option_Settings::scope for description.
-	 * @param string                               $endpoint_login    @see OpenID_Connect_Generic_Option_Settings::endpoint_login for description.
-	 * @param string                               $endpoint_userinfo @see OpenID_Connect_Generic_Option_Settings::endpoint_userinfo for description.
-	 * @param string                               $endpoint_token    @see OpenID_Connect_Generic_Option_Settings::endpoint_token for description.
-	 * @param string                               $redirect_uri      @see OpenID_Connect_Generic_Option_Settings::redirect_uri for description.
-	 * @param string                               $acr_values        @see OpenID_Connect_Generic_Option_Settings::acr_values for description.
-	 * @param int                                  $state_time_limit  @see OpenID_Connect_Generic_Option_Settings::state_time_limit for description.
-	 * @param OpenID_Connect_Generic_Option_Logger $logger            The plugin logging object instance.
+	 * @param string               $client_id                 @see PP_SSO_Option_Settings::client_id for description.
+	 * @param string               $client_secret             @see PP_SSO_Option_Settings::client_secret for description.
+	 * @param string               $scope                     @see PP_SSO_Option_Settings::scope for description.
+	 * @param string               $scope_enroll              @see PP_SSO_Option_Settings::scope_enroll for description.
+	 * @param string               $endpoint_login            @see PP_SSO_Option_Settings::endpoint_login for description.
+	 * @param string               $endpoint_userinfo         @see PP_SSO_Option_Settings::endpoint_userinfo for description.
+	 * @param string               $endpoint_token            @see PP_SSO_Option_Settings::endpoint_token for description.
+	 * @param string               $redirect_uri              @see PP_SSO_Option_Settings::redirect_uri for description.
+	 * @param string               $subscription_redirect_uri @see PP_SSO_Option_Settings::subscription_redirect_uri for description.
+	 * @param string               $acr_values                @see PP_SSO_Option_Settings::acr_values for description.
+	 * @param int                  $state_time_limit          @see PP_SSO_Option_Settings::state_time_limit for description.
+	 * @param PP_SSO_Option_Logger $logger                    The plugin logging object instance.
 	 */
-	public function __construct( $client_id, $client_secret, $scope, $endpoint_login, $endpoint_userinfo, $endpoint_token, $redirect_uri, $acr_values, $state_time_limit, $logger ) {
+	public function __construct( $client_id, $client_secret, $scope, $scope_enroll, $endpoint_login, $endpoint_userinfo, $endpoint_token, $redirect_uri, $subscription_redirect_uri, $acr_values, $state_time_limit, $logger ) {
 		$this->client_id = $client_id;
 		$this->client_secret = $client_secret;
 		$this->scope = $scope;
+		$this->scope_enroll = $scope_enroll;
 		$this->endpoint_login = $endpoint_login;
 		$this->endpoint_userinfo = $endpoint_userinfo;
 		$this->endpoint_token = $endpoint_token;
 		$this->redirect_uri = $redirect_uri;
+		$this->subscription_redirect_uri = $subscription_redirect_uri;
 		$this->acr_values = $acr_values;
 		$this->state_time_limit = $state_time_limit;
 		$this->logger = $logger;
@@ -137,10 +159,12 @@ class OpenID_Connect_Generic_Client {
 	/**
 	 * Provides the configured Redirect URI supplied to the IDP.
 	 *
+	 * @param string $type Authentication type 'login' or 'enroll'.
+	 *
 	 * @return string
 	 */
-	public function get_redirect_uri() {
-		return $this->redirect_uri;
+	public function get_redirect_uri( $type = 'login' ) {
+		return 'login' === $type ? $this->redirect_uri : $this->subscription_redirect_uri;
 	}
 
 	/**
@@ -172,12 +196,12 @@ class OpenID_Connect_Generic_Client {
 
 		// Check the client request state.
 		if ( ! isset( $request['state'] ) ) {
-			do_action( 'openid-connect-generic-no-state-provided' );
-			return new WP_Error( 'missing-state', __( 'Missing state.', 'daggerhart-openid-connect-generic' ), $request );
+			do_action( 'pp-sso-no-state-provided' );
+			return new WP_Error( 'missing-state', __( 'Missing state.', 'privacy-portal-sso' ), $request );
 		}
 
 		if ( ! $this->check_state( $request['state'] ) ) {
-			return new WP_Error( 'invalid-state', __( 'Invalid state.', 'daggerhart-openid-connect-generic' ), $request );
+			return new WP_Error( 'invalid-state', __( 'Invalid state.', 'privacy-portal-sso' ), $request );
 		}
 
 		return $request;
@@ -192,7 +216,7 @@ class OpenID_Connect_Generic_Client {
 	 */
 	public function get_authentication_code( $request ) {
 		if ( ! isset( $request['code'] ) ) {
-			return new WP_Error( 'missing-authentication-code', __( 'Missing authentication code.', 'daggerhart-openid-connect-generic' ), $request );
+			return new WP_Error( 'missing-authentication-code', __( 'Missing authentication code.', 'privacy-portal-sso' ), $request );
 		}
 
 		return $request['code'];
@@ -202,13 +226,14 @@ class OpenID_Connect_Generic_Client {
 	 * Using the authorization_code, request an authentication token from the IDP.
 	 *
 	 * @param string|WP_Error $code The authorization code.
+	 * @param string          $type can be set to 'login' for login requests or 'enroll' for newsletter subscriptions.
 	 *
 	 * @return array<mixed>|WP_Error
 	 */
-	public function request_authentication_token( $code ) {
+	public function request_authentication_token( $code, $type = 'login' ) {
 
 		// Add Host header - required for when the openid-connect endpoint is behind a reverse-proxy.
-		$parsed_url = parse_url( $this->endpoint_token );
+		$parsed_url = wp_parse_url( $this->endpoint_token );
 		$host = $parsed_url['host'];
 
 		$request = array(
@@ -216,9 +241,9 @@ class OpenID_Connect_Generic_Client {
 				'code'          => $code,
 				'client_id'     => $this->client_id,
 				'client_secret' => $this->client_secret,
-				'redirect_uri'  => $this->redirect_uri,
+				'redirect_uri'  => ( 'enroll' === $type ) ? $this->subscription_redirect_uri : $this->redirect_uri,
 				'grant_type'    => 'authorization_code',
-				'scope'         => $this->scope,
+				'scope'         => ( 'enroll' === $type ) ? $this->scope_enroll : $this->scope,
 			),
 			'headers' => array( 'Host' => $host ),
 		);
@@ -228,7 +253,7 @@ class OpenID_Connect_Generic_Client {
 		}
 
 		// Allow modifications to the request.
-		$request = apply_filters( 'openid-connect-generic-alter-request', $request, 'get-authentication-token' );
+		$request = apply_filters( 'pp-sso-alter-request', $request, 'get-authentication-token' );
 
 		// Call the server and ask for a token.
 		$start_time = microtime( true );
@@ -237,7 +262,7 @@ class OpenID_Connect_Generic_Client {
 		$this->logger->log( $this->endpoint_token, 'request_authentication_token', $end_time - $start_time );
 
 		if ( is_wp_error( $response ) ) {
-			$response->add( 'request_authentication_token', __( 'Request for authentication token failed.', 'daggerhart-openid-connect-generic' ) );
+			$response->add( 'request_authentication_token', __( 'Request for authentication token failed.', 'privacy-portal-sso' ) );
 		}
 
 		return $response;
@@ -261,7 +286,7 @@ class OpenID_Connect_Generic_Client {
 		);
 
 		// Allow modifications to the request.
-		$request = apply_filters( 'openid-connect-generic-alter-request', $request, 'refresh-token' );
+		$request = apply_filters( 'pp-sso-alter-request', $request, 'refresh-token' );
 
 		// Call the server and ask for new tokens.
 		$start_time = microtime( true );
@@ -270,7 +295,7 @@ class OpenID_Connect_Generic_Client {
 		$this->logger->log( $this->endpoint_token, 'request_new_tokens', $end_time - $start_time );
 
 		if ( is_wp_error( $response ) ) {
-			$response->add( 'refresh_token', __( 'Refresh token failed.', 'daggerhart-openid-connect-generic' ) );
+			$response->add( 'refresh_token', __( 'Refresh token failed.', 'privacy-portal-sso' ) );
 		}
 
 		return $response;
@@ -285,7 +310,7 @@ class OpenID_Connect_Generic_Client {
 	 */
 	public function get_token_response( $token_result ) {
 		if ( ! isset( $token_result['body'] ) ) {
-			return new WP_Error( 'missing-token-body', __( 'Missing token body.', 'daggerhart-openid-connect-generic' ), $token_result );
+			return new WP_Error( 'missing-token-body', __( 'Missing token body.', 'privacy-portal-sso' ), $token_result );
 		}
 
 		// Extract the token response from token.
@@ -293,7 +318,7 @@ class OpenID_Connect_Generic_Client {
 
 		// Check that the token response body was able to be parsed.
 		if ( is_null( $token_response ) ) {
-			return new WP_Error( 'invalid-token', __( 'Invalid token.', 'daggerhart-openid-connect-generic' ), $token_result );
+			return new WP_Error( 'invalid-token', __( 'Invalid token.', 'privacy-portal-sso' ), $token_result );
 		}
 
 		if ( isset( $token_response['error'] ) ) {
@@ -317,7 +342,7 @@ class OpenID_Connect_Generic_Client {
 	 */
 	public function request_userinfo( $access_token ) {
 		// Allow modifications to the request.
-		$request = apply_filters( 'openid-connect-generic-alter-request', array(), 'get-userinfo' );
+		$request = apply_filters( 'pp-sso-alter-request', array(), 'get-userinfo' );
 
 		/*
 		 * Section 5.3.1 of the spec recommends sending the access token using the authorization header
@@ -330,7 +355,7 @@ class OpenID_Connect_Generic_Client {
 		$request['headers']['Authorization'] = 'Bearer ' . $access_token;
 
 		// Add Host header - required for when the openid-connect endpoint is behind a reverse-proxy.
-		$parsed_url = parse_url( $this->endpoint_userinfo );
+		$parsed_url = wp_parse_url( $this->endpoint_userinfo );
 		$host = $parsed_url['host'];
 
 		if ( ! empty( $parsed_url['port'] ) ) {
@@ -346,7 +371,7 @@ class OpenID_Connect_Generic_Client {
 		$this->logger->log( $this->endpoint_userinfo, 'request_userinfo', $end_time - $start_time );
 
 		if ( is_wp_error( $response ) ) {
-			$response->add( 'request_userinfo', __( 'Request for userinfo failed.', 'daggerhart-openid-connect-generic' ) );
+			$response->add( 'request_userinfo', __( 'Request for userinfo failed.', 'privacy-portal-sso' ) );
 		}
 
 		return $response;
@@ -361,13 +386,13 @@ class OpenID_Connect_Generic_Client {
 	 */
 	public function new_state( $redirect_to ) {
 		// New state w/ timestamp.
-		$state = md5( mt_rand() . microtime( true ) );
+		$state = md5( wp_rand() . microtime( true ) );
 		$state_value = array(
 			$state => array(
 				'redirect_to' => $redirect_to,
 			),
 		);
-		set_transient( 'openid-connect-generic-state--' . $state, $state_value, $this->state_time_limit );
+		set_transient( 'pp-sso-state--' . $state, $state_value, $this->state_time_limit );
 
 		return $state;
 	}
@@ -383,15 +408,15 @@ class OpenID_Connect_Generic_Client {
 
 		$state_found = true;
 
-		if ( ! get_option( '_transient_openid-connect-generic-state--' . $state ) ) {
-			do_action( 'openid-connect-generic-state-not-found', $state );
+		if ( ! get_option( 'pp-sso-state--' . $state ) ) {
+			do_action( 'pp-sso-state-not-found', $state );
 			$state_found = false;
 		}
 
-		$valid = get_transient( 'openid-connect-generic-state--' . $state );
+		$valid = get_transient( 'pp-sso-state--' . $state );
 
 		if ( ! $valid && $state_found ) {
-			do_action( 'openid-connect-generic-state-expired', $state );
+			do_action( 'pp-sso-state-expired', $state );
 		}
 
 		return boolval( $valid );
@@ -406,7 +431,7 @@ class OpenID_Connect_Generic_Client {
 	 */
 	public function get_authentication_state( $request ) {
 		if ( ! isset( $request['state'] ) ) {
-			return new WP_Error( 'missing-authentication-state', __( 'Missing authentication state.', 'daggerhart-openid-connect-generic' ), $request );
+			return new WP_Error( 'missing-authentication-state', __( 'Missing authentication state.', 'privacy-portal-sso' ), $request );
 		}
 
 		return $request['state'];
@@ -443,14 +468,14 @@ class OpenID_Connect_Generic_Client {
 	public function get_id_token_claim( $token_response ) {
 		// Validate there is an id_token.
 		if ( ! isset( $token_response['id_token'] ) ) {
-			return new WP_Error( 'no-identity-token', __( 'No identity token.', 'daggerhart-openid-connect-generic' ), $token_response );
+			return new WP_Error( 'no-identity-token', __( 'No identity token.', 'privacy-portal-sso' ), $token_response );
 		}
 
 		// Break apart the id_token in the response for decoding.
 		$tmp = explode( '.', $token_response['id_token'] );
 
 		if ( ! isset( $tmp[1] ) ) {
-			return new WP_Error( 'missing-identity-token', __( 'Missing identity token.', 'daggerhart-openid-connect-generic' ), $token_response );
+			return new WP_Error( 'missing-identity-token', __( 'Missing identity token.', 'privacy-portal-sso' ), $token_response );
 		}
 
 		// Extract the id_token's claims from the token.
@@ -477,18 +502,18 @@ class OpenID_Connect_Generic_Client {
 	 */
 	public function validate_id_token_claim( $id_token_claim ) {
 		if ( ! is_array( $id_token_claim ) ) {
-			return new WP_Error( 'bad-id-token-claim', __( 'Bad ID token claim.', 'daggerhart-openid-connect-generic' ), $id_token_claim );
+			return new WP_Error( 'bad-id-token-claim', __( 'Bad ID token claim.', 'privacy-portal-sso' ), $id_token_claim );
 		}
 
 		// Validate the identification data and it's value.
 		if ( ! isset( $id_token_claim['sub'] ) || empty( $id_token_claim['sub'] ) ) {
-			return new WP_Error( 'no-subject-identity', __( 'No subject identity.', 'daggerhart-openid-connect-generic' ), $id_token_claim );
+			return new WP_Error( 'no-subject-identity', __( 'No subject identity.', 'privacy-portal-sso' ), $id_token_claim );
 		}
 
 		// Validate acr values when the option is set in the configuration.
 		if ( ! empty( $this->acr_values ) && isset( $id_token_claim['acr'] ) ) {
 			if ( $this->acr_values != $id_token_claim['acr'] ) {
-				return new WP_Error( 'no-match-acr', __( 'No matching acr values.', 'daggerhart-openid-connect-generic' ), $id_token_claim );
+				return new WP_Error( 'no-match-acr', __( 'No matching acr values.', 'privacy-portal-sso' ), $id_token_claim );
 			}
 		}
 
@@ -508,7 +533,7 @@ class OpenID_Connect_Generic_Client {
 
 		// Make sure we didn't get an error, and that the response body exists.
 		if ( is_wp_error( $user_claim_result ) || ! isset( $user_claim_result['body'] ) ) {
-			return new WP_Error( 'bad-claim', __( 'Bad user claim.', 'daggerhart-openid-connect-generic' ), $user_claim_result );
+			return new WP_Error( 'bad-claim', __( 'Bad user claim.', 'privacy-portal-sso' ), $user_claim_result );
 		}
 
 		$user_claim = json_decode( $user_claim_result['body'], true );
@@ -528,12 +553,12 @@ class OpenID_Connect_Generic_Client {
 	public function validate_user_claim( $user_claim, $id_token_claim ) {
 		// Validate the user claim.
 		if ( ! is_array( $user_claim ) ) {
-			return new WP_Error( 'invalid-user-claim', __( 'Invalid user claim.', 'daggerhart-openid-connect-generic' ), $user_claim );
+			return new WP_Error( 'invalid-user-claim', __( 'Invalid user claim.', 'privacy-portal-sso' ), $user_claim );
 		}
 
 		// Allow for errors from the IDP.
 		if ( isset( $user_claim['error'] ) ) {
-			$message = __( 'Error from the IDP.', 'daggerhart-openid-connect-generic' );
+			$message = __( 'Error from the IDP.', 'privacy-portal-sso' );
 			if ( ! empty( $user_claim['error_description'] ) ) {
 				$message = $user_claim['error_description'];
 			}
@@ -542,14 +567,14 @@ class OpenID_Connect_Generic_Client {
 
 		// Make sure the id_token sub equals the user_claim sub, according to spec.
 		if ( $id_token_claim['sub'] !== $user_claim['sub'] ) {
-			return new WP_Error( 'incorrect-user-claim', __( 'Incorrect user claim.', 'daggerhart-openid-connect-generic' ), func_get_args() );
+			return new WP_Error( 'incorrect-user-claim', __( 'Incorrect user claim.', 'privacy-portal-sso' ), func_get_args() );
 		}
 
 		// Allow for other plugins to alter the login success.
-		$login_user = apply_filters( 'openid-connect-generic-user-login-test', true, $user_claim );
+		$login_user = apply_filters( 'pp-sso-user-login-test', true, $user_claim );
 
 		if ( ! $login_user ) {
-			return new WP_Error( 'unauthorized', __( 'Unauthorized access.', 'daggerhart-openid-connect-generic' ), $login_user );
+			return new WP_Error( 'unauthorized', __( 'Unauthorized access.', 'privacy-portal-sso' ), $login_user );
 		}
 
 		return true;

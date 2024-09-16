@@ -9,6 +9,7 @@
 *.vi
 *~
 *.sass-cache
+*.ignore
 
 # Local Development files/folders.
 .env
@@ -68,5 +69,5 @@ tools/local-env/wp-content/upgrade/*
 # Local Development Exceptions.
 !tools/local-env/wp-content/mu-plugins/*
 !tools/local-env/wp-content/plugins/.gitkeep
-!tools/local-env/wp-content/plugins/daggerhart-openid-connect-generic/.gitkeep
+!tools/local-env/wp-content/plugins/privacy-portal-sso/.gitkeep
 
