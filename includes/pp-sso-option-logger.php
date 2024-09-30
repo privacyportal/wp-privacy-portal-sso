@@ -219,7 +219,8 @@ class PP_SSO_Option_Logger {
 		}
 		$logs = array_reverse( $logs );
 
-		ini_set( 'xdebug.var_display_max_depth', '-1' );
+		$original_display_max_depth = ini_get( 'xdebug.var_display_max_depth' );
+		@ini_set( 'xdebug.var_display_max_depth', '-1' );
 
 		ob_start();
 		?>
@@ -260,6 +261,8 @@ class PP_SSO_Option_Logger {
 		</table>
 		<?php
 		$output = ob_get_clean();
+
+		@ini_set( 'xdebug.var_display_max_depth', $original_display_max_depth );
 
 		return $output;
 	}

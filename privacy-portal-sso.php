@@ -67,25 +67,30 @@ Notes
   - pp-sso-valid-states - locally stored generated states
 */
 
-define( 'OIDC_CLIENT_SCOPE', 'openid name email' );
-define( 'OIDC_CLIENT_SCOPE_ENROLL', 'openid email' );
-define( 'OIDC_ENDPOINT_LOGIN_URL', 'https://app.privacyportal.org/oauth/authorize' );
-define( 'OIDC_ENDPOINT_USERINFO_URL', 'https://api.privacyportal.org/oauth/userinfo' );
-define( 'OIDC_ENDPOINT_TOKEN_URL', 'https://api.privacyportal.org/oauth/token' );
-define( 'OIDC_ENDPOINT_LOGOUT_URL', '' );
-define( 'OIDC_ACR_VALUES', '' );
-define( 'OIDC_NO_SSL_VERIFY', 0 );
-define( 'OIDC_TOKEN_REFRESH_ENABLE', 1 );
-define( 'OIDC_REDIRECT_USER_BACK', 1 );
-define( 'OIDC_REDIRECT_ON_LOGOUT', 1 );
-define( 'OIDC_IDENTITY_KEY', 'sub' );
-define( 'OIDC_NICKNAME_KEY', 'name' );
-define( 'OIDC_EMAIL_FORMAT', '{email}' );
-define( 'OIDC_DISPLAY_NAME_FORMAT', '{email}' );
-define( 'OIDC_IDENTIFY_WITH_USERNAME', 0 );
-define( 'OIDC_ALTERNATE_REDIRECT_URI', 1 );
-define( 'OIDC_HTTP_REQUEST_TIMEOUT', 5 );
-define( 'OIDC_STATE_TIME_LIMIT', 300 );
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+define( 'PP_SSO_CLIENT_SCOPE', 'openid name email' );
+define( 'PP_SSO_CLIENT_SCOPE_ENROLL', 'openid email' );
+define( 'PP_SSO_ENDPOINT_LOGIN_URL', 'https://app.privacyportal.org/oauth/authorize' );
+define( 'PP_SSO_ENDPOINT_USERINFO_URL', 'https://api.privacyportal.org/oauth/userinfo' );
+define( 'PP_SSO_ENDPOINT_TOKEN_URL', 'https://api.privacyportal.org/oauth/token' );
+define( 'PP_SSO_ENDPOINT_LOGOUT_URL', '' );
+define( 'PP_SSO_ACR_VALUES', '' );
+define( 'PP_SSO_NO_SSL_VERIFY', 0 );
+define( 'PP_SSO_TOKEN_REFRESH_ENABLE', 1 );
+define( 'PP_SSO_REDIRECT_USER_BACK', 1 );
+define( 'PP_SSO_REDIRECT_ON_LOGOUT', 1 );
+define( 'PP_SSO_IDENTITY_KEY', 'sub' );
+define( 'PP_SSO_NICKNAME_KEY', 'name' );
+define( 'PP_SSO_EMAIL_FORMAT', '{email}' );
+define( 'PP_SSO_DISPLAY_NAME_FORMAT', '{email}' );
+define( 'PP_SSO_IDENTIFY_WITH_USERNAME', 0 );
+define( 'PP_SSO_ALTERNATE_REDIRECT_URI', 1 );
+define( 'PP_SSO_HTTP_REQUEST_TIMEOUT', 5 );
+define( 'PP_SSO_STATE_TIME_LIMIT', 300 );
 
 /**
  * Privacy_Portal_SSO class.
@@ -186,7 +191,7 @@ class Privacy_Portal_SSO {
 		PP_SSO_Subscribe_Form::register( $this->settings, $this->client_wrapper );
 
 		// Add a shortcode to get the auth URL.
-		add_shortcode( 'privacy_portal_sso_url', array( $this->client_wrapper, 'get_authentication_url' ) );
+		add_shortcode( PP_SSO_Login_Form::LOGIN_URL_SHORTCODE, array( $this->client_wrapper, 'get_authentication_url' ) );
 
 		// Add actions to our scheduled cron jobs.
 		add_action( 'pp-sso-cron-daily', array( $this, 'cron_states_garbage_collection' ) );
@@ -416,38 +421,38 @@ class Privacy_Portal_SSO {
 			// Default settings values.
 			array(
 				// OAuth client settings.
-				'login_type'           => defined( 'OIDC_LOGIN_TYPE' ) ? OIDC_LOGIN_TYPE : 'button',
-				'client_id'            => defined( 'OIDC_CLIENT_ID' ) ? OIDC_CLIENT_ID : '',
-				'client_secret'        => defined( 'OIDC_CLIENT_SECRET' ) ? OIDC_CLIENT_SECRET : '',
-				'scope'                => defined( 'OIDC_CLIENT_SCOPE' ) ? OIDC_CLIENT_SCOPE : '',
-				'scope_enroll'         => defined( 'OIDC_CLIENT_SCOPE_ENROLL' ) ? OIDC_CLIENT_SCOPE_ENROLL : '',
-				'endpoint_login'       => defined( 'OIDC_ENDPOINT_LOGIN_URL' ) ? OIDC_ENDPOINT_LOGIN_URL : '',
-				'endpoint_userinfo'    => defined( 'OIDC_ENDPOINT_USERINFO_URL' ) ? OIDC_ENDPOINT_USERINFO_URL : '',
-				'endpoint_token'       => defined( 'OIDC_ENDPOINT_TOKEN_URL' ) ? OIDC_ENDPOINT_TOKEN_URL : '',
-				'endpoint_end_session' => defined( 'OIDC_ENDPOINT_LOGOUT_URL' ) ? OIDC_ENDPOINT_LOGOUT_URL : '',
-				'acr_values'           => defined( 'OIDC_ACR_VALUES' ) ? OIDC_ACR_VALUES : '',
+				'login_type'           => defined( 'PP_SSO_LOGIN_TYPE' ) ? PP_SSO_LOGIN_TYPE : 'button',
+				'client_id'            => defined( 'PP_SSO_CLIENT_ID' ) ? PP_SSO_CLIENT_ID : '',
+				'client_secret'        => defined( 'PP_SSO_CLIENT_SECRET' ) ? PP_SSO_CLIENT_SECRET : '',
+				'scope'                => defined( 'PP_SSO_CLIENT_SCOPE' ) ? PP_SSO_CLIENT_SCOPE : '',
+				'scope_enroll'         => defined( 'PP_SSO_CLIENT_SCOPE_ENROLL' ) ? PP_SSO_CLIENT_SCOPE_ENROLL : '',
+				'endpoint_login'       => defined( 'PP_SSO_ENDPOINT_LOGIN_URL' ) ? PP_SSO_ENDPOINT_LOGIN_URL : '',
+				'endpoint_userinfo'    => defined( 'PP_SSO_ENDPOINT_USERINFO_URL' ) ? PP_SSO_ENDPOINT_USERINFO_URL : '',
+				'endpoint_token'       => defined( 'PP_SSO_ENDPOINT_TOKEN_URL' ) ? PP_SSO_ENDPOINT_TOKEN_URL : '',
+				'endpoint_end_session' => defined( 'PP_SSO_ENDPOINT_LOGOUT_URL' ) ? PP_SSO_ENDPOINT_LOGOUT_URL : '',
+				'acr_values'           => defined( 'PP_SSO_ACR_VALUES' ) ? PP_SSO_ACR_VALUES : '',
 
 				// Non-standard settings.
-				'no_sslverify'           => defined( 'OIDC_NO_SSL_VERIFY' ) ? intval( OIDC_NO_SSL_VERIFY ) : 0,
-				'http_request_timeout'   => defined( 'OIDC_HTTP_REQUEST_TIMEOUT' ) ? intval( OIDC_HTTP_REQUEST_TIMEOUT ) : 5,
-				'identity_key'           => defined( 'OIDC_IDENTITY_KEY' ) ? OIDC_IDENTITY_KEY : 'preferred_username',
-				'nickname_key'           => defined( 'OIDC_NICKNAME_KEY' ) ? OIDC_NICKNAME_KEY : 'preferred_username',
-				'email_format'           => defined( 'OIDC_EMAIL_FORMAT' ) ? OIDC_EMAIL_FORMAT : '{email}',
-				'displayname_format'     => defined( 'OIDC_DISPLAY_NAME_FORMAT' ) ? OIDC_DISPLAY_NAME_FORMAT : '',
-				'identify_with_username' => defined( 'OIDC_IDENTIFY_WITH_USERNAME' ) ? intval( OIDC_IDENTIFY_WITH_USERNAME ) : 0,
-				'state_time_limit'       => defined( 'OIDC_STATE_TIME_LIMIT' ) ? intval( OIDC_STATE_TIME_LIMIT ) : 180,
+				'no_sslverify'           => defined( 'PP_SSO_NO_SSL_VERIFY' ) ? intval( PP_SSO_NO_SSL_VERIFY ) : 0,
+				'http_request_timeout'   => defined( 'PP_SSO_HTTP_REQUEST_TIMEOUT' ) ? intval( PP_SSO_HTTP_REQUEST_TIMEOUT ) : 5,
+				'identity_key'           => defined( 'PP_SSO_IDENTITY_KEY' ) ? PP_SSO_IDENTITY_KEY : 'preferred_username',
+				'nickname_key'           => defined( 'PP_SSO_NICKNAME_KEY' ) ? PP_SSO_NICKNAME_KEY : 'preferred_username',
+				'email_format'           => defined( 'PP_SSO_EMAIL_FORMAT' ) ? PP_SSO_EMAIL_FORMAT : '{email}',
+				'displayname_format'     => defined( 'PP_SSO_DISPLAY_NAME_FORMAT' ) ? PP_SSO_DISPLAY_NAME_FORMAT : '',
+				'identify_with_username' => defined( 'PP_SSO_IDENTIFY_WITH_USERNAME' ) ? intval( PP_SSO_IDENTIFY_WITH_USERNAME ) : 0,
+				'state_time_limit'       => defined( 'PP_SSO_STATE_TIME_LIMIT' ) ? intval( PP_SSO_STATE_TIME_LIMIT ) : 180,
 
 				// Plugin settings.
 				'enable_login'             => 0,
-				'enforce_privacy'          => defined( 'OIDC_ENFORCE_PRIVACY' ) ? intval( OIDC_ENFORCE_PRIVACY ) : 0,
-				'alternate_redirect_uri'   => defined( 'OIDC_ALTERNATE_REDIRECT_URI' ) ? intval( OIDC_ALTERNATE_REDIRECT_URI ) : 0,
-				'token_refresh_enable'     => defined( 'OIDC_TOKEN_REFRESH_ENABLE' ) ? intval( OIDC_TOKEN_REFRESH_ENABLE ) : 1,
-				'link_existing_users'      => defined( 'OIDC_LINK_EXISTING_USERS' ) ? intval( OIDC_LINK_EXISTING_USERS ) : 0,
-				'create_if_does_not_exist' => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) ? intval( OIDC_CREATE_IF_DOES_NOT_EXIST ) : 1,
-				'redirect_user_back'       => defined( 'OIDC_REDIRECT_USER_BACK' ) ? intval( OIDC_REDIRECT_USER_BACK ) : 0,
-				'redirect_on_logout'       => defined( 'OIDC_REDIRECT_ON_LOGOUT' ) ? intval( OIDC_REDIRECT_ON_LOGOUT ) : 1,
-				'enable_logging'           => defined( 'OIDC_ENABLE_LOGGING' ) ? intval( OIDC_ENABLE_LOGGING ) : 0,
-				'log_limit'                => defined( 'OIDC_LOG_LIMIT' ) ? intval( OIDC_LOG_LIMIT ) : 1000,
+				'enforce_privacy'          => defined( 'PP_SSO_ENFORCE_PRIVACY' ) ? intval( PP_SSO_ENFORCE_PRIVACY ) : 0,
+				'alternate_redirect_uri'   => defined( 'PP_SSO_ALTERNATE_REDIRECT_URI' ) ? intval( PP_SSO_ALTERNATE_REDIRECT_URI ) : 0,
+				'token_refresh_enable'     => defined( 'PP_SSO_TOKEN_REFRESH_ENABLE' ) ? intval( PP_SSO_TOKEN_REFRESH_ENABLE ) : 1,
+				'link_existing_users'      => defined( 'PP_SSO_LINK_EXISTING_USERS' ) ? intval( PP_SSO_LINK_EXISTING_USERS ) : 0,
+				'create_if_does_not_exist' => defined( 'PP_SSO_CREATE_IF_DOES_NOT_EXIST' ) ? intval( PP_SSO_CREATE_IF_DOES_NOT_EXIST ) : 1,
+				'redirect_user_back'       => defined( 'PP_SSO_REDIRECT_USER_BACK' ) ? intval( PP_SSO_REDIRECT_USER_BACK ) : 0,
+				'redirect_on_logout'       => defined( 'PP_SSO_REDIRECT_ON_LOGOUT' ) ? intval( PP_SSO_REDIRECT_ON_LOGOUT ) : 1,
+				'enable_logging'           => defined( 'PP_SSO_ENABLE_LOGGING' ) ? intval( PP_SSO_ENABLE_LOGGING ) : 0,
+				'log_limit'                => defined( 'PP_SSO_LOG_LIMIT' ) ? intval( PP_SSO_LOG_LIMIT ) : 20,
 
 				// Newsletter settings.
 				'enable_enroll'            => 0,

@@ -32,7 +32,7 @@
  * @property string $scope_enroll         The list of scopes this client should access during Anonymous Subscriptions.
  * @property string $endpoint_login       The IDP authorization endpoint URL.
  * @property string $endpoint_userinfo    The IDP User information endpoint URL.
- * @property string $endpoint_token       The IDP token validation endpoint URL.
+ * @property string $endpoint_token       The IDP issue access token endpoint URL.
  * @property string $endpoint_end_session The IDP logout endpoint URL.
  * @property string $acr_values           The Authentication contract as defined on the IDP.
  *
@@ -75,7 +75,7 @@ class PP_SSO_Option_Settings {
 	 *
 	 * @var string
 	 */
-	const OPTION_NAME = 'privacy_portal_sso_settings';
+	const OPTION_NAME = 'pp_sso_settings';
 
 	/**
 	 * Stored option values array.
@@ -97,33 +97,33 @@ class PP_SSO_Option_Settings {
 	 * @var array<string,string>
 	 */
 	private $environment_settings = array(
-		'client_id'                 => 'OIDC_CLIENT_ID',
-		'client_secret'             => 'OIDC_CLIENT_SECRET',
-		'endpoint_end_session'      => 'OIDC_ENDPOINT_LOGOUT_URL',
-		'endpoint_login'            => 'OIDC_ENDPOINT_LOGIN_URL',
-		'endpoint_token'            => 'OIDC_ENDPOINT_TOKEN_URL',
-		'endpoint_userinfo'         => 'OIDC_ENDPOINT_USERINFO_URL',
-		'login_type'                => 'OIDC_LOGIN_TYPE',
-		'scope'                     => 'OIDC_CLIENT_SCOPE',
-		'scope_enroll'              => 'OIDC_CLIENT_SCOPE_ENROLL',
-		'create_if_does_not_exist'  => 'OIDC_CREATE_IF_DOES_NOT_EXIST',
-		'enforce_privacy'           => 'OIDC_ENFORCE_PRIVACY',
-		'link_existing_users'       => 'OIDC_LINK_EXISTING_USERS',
-		'redirect_on_logout'        => 'OIDC_REDIRECT_ON_LOGOUT',
-		'redirect_user_back'        => 'OIDC_REDIRECT_USER_BACK',
-		'acr_values'                => 'OIDC_ACR_VALUES',
-		'enable_logging'            => 'OIDC_ENABLE_LOGGING',
-		'log_limit'                 => 'OIDC_LOG_LIMIT',
-		'no_sslverify'              => 'OIDC_NO_SSL_VERIFY',
-		'http_request_timeout'      => 'OIDC_HTTP_REQUEST_TIMEOUT',
-		'identity_key'              => 'OIDC_IDENTITY_KEY',
-		'nickname_key'              => 'OIDC_NICKNAME_KEY',
-		'email_format'              => 'OIDC_EMAIL_FORMAT',
-		'displayname_format'        => 'OIDC_DISPLAY_NAME_FORMAT',
-		'identify_with_username'    => 'OIDC_IDENTIFY_WITH_USERNAME',
-		'state_time_limit'          => 'OIDC_STATE_TIME_LIMIT',
-		'alternate_redirect_uri'    => 'OIDC_ALTERNATE_REDIRECT_URI',
-		'token_refresh_enable'      => 'OIDC_TOKEN_REFRESH_ENABLE',
+		'client_id'                 => 'PP_SSO_CLIENT_ID',
+		'client_secret'             => 'PP_SSO_CLIENT_SECRET',
+		'endpoint_end_session'      => 'PP_SSO_ENDPOINT_LOGOUT_URL',
+		'endpoint_login'            => 'PP_SSO_ENDPOINT_LOGIN_URL',
+		'endpoint_token'            => 'PP_SSO_ENDPOINT_TOKEN_URL',
+		'endpoint_userinfo'         => 'PP_SSO_ENDPOINT_USERINFO_URL',
+		'login_type'                => 'PP_SSO_LOGIN_TYPE',
+		'scope'                     => 'PP_SSO_CLIENT_SCOPE',
+		'scope_enroll'              => 'PP_SSO_CLIENT_SCOPE_ENROLL',
+		'create_if_does_not_exist'  => 'PP_SSO_CREATE_IF_DOES_NOT_EXIST',
+		'enforce_privacy'           => 'PP_SSO_ENFORCE_PRIVACY',
+		'link_existing_users'       => 'PP_SSO_LINK_EXISTING_USERS',
+		'redirect_on_logout'        => 'PP_SSO_REDIRECT_ON_LOGOUT',
+		'redirect_user_back'        => 'PP_SSO_REDIRECT_USER_BACK',
+		'acr_values'                => 'PP_SSO_ACR_VALUES',
+		'enable_logging'            => 'PP_SSO_ENABLE_LOGGING',
+		'log_limit'                 => 'PP_SSO_LOG_LIMIT',
+		'no_sslverify'              => 'PP_SSO_NO_SSL_VERIFY',
+		'http_request_timeout'      => 'PP_SSO_HTTP_REQUEST_TIMEOUT',
+		'identity_key'              => 'PP_SSO_IDENTITY_KEY',
+		'nickname_key'              => 'PP_SSO_NICKNAME_KEY',
+		'email_format'              => 'PP_SSO_EMAIL_FORMAT',
+		'displayname_format'        => 'PP_SSO_DISPLAY_NAME_FORMAT',
+		'identify_with_username'    => 'PP_SSO_IDENTIFY_WITH_USERNAME',
+		'state_time_limit'          => 'PP_SSO_STATE_TIME_LIMIT',
+		'alternate_redirect_uri'    => 'PP_SSO_ALTERNATE_REDIRECT_URI',
+		'token_refresh_enable'      => 'PP_SSO_TOKEN_REFRESH_ENABLE',
 	);
 
 	/**

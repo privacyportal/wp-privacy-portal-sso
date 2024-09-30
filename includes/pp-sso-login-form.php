@@ -19,6 +19,9 @@
  */
 class PP_SSO_Login_Form {
 
+	const LOGIN_BUTTON_SHORTCODE = 'pp_sso_login_button';
+	const LOGIN_URL_SHORTCODE = 'pp_sso_login_url';
+
 	/**
 	 * Plugin settings object.
 	 *
@@ -59,7 +62,7 @@ class PP_SSO_Login_Form {
 		add_filter( 'login_message', array( $login_form, 'handle_login_page' ), 99 );
 
 		// Add a shortcode for the login button.
-		add_shortcode( 'privacy_portal_login_button', array( $login_form, 'make_login_button' ) );
+		add_shortcode( self::LOGIN_BUTTON_SHORTCODE, array( $login_form, 'make_login_button' ) );
 
 		$login_form->handle_redirect_login_type_auto();
 	}
@@ -151,7 +154,7 @@ class PP_SSO_Login_Form {
 				'button_text' => __( 'Sign In With Privacy Portal', 'privacy-portal-sso' ),
 			),
 			$atts,
-			'privacy_portal_sso_login_button'
+			self::LOGIN_BUTTON_SHORTCODE
 		);
 
 		$text = apply_filters( 'pp-sso-login-button-text', $atts['button_text'] );
@@ -160,11 +163,11 @@ class PP_SSO_Login_Form {
 		$href = $this->client_wrapper->get_authentication_url( $atts );
 		$href = esc_url_raw( $href );
 
-		$login_button = <<<HTML
-<div class="pp-sso-login-button" style="margin: 1em 0; text-align: center;">
-	<a class="button button-large" href="{$href}">{$text}</a>
+		$login_button = "
+<div class=\"pp-sso-login-button\" style=\"margin: 1em 0; text-align: center;\">
+	<a class=\"button button-large\" href=\"{$href}\">{$text}</a>
 </div>
-HTML;
+";
 
 		return $login_button;
 	}
@@ -175,14 +178,13 @@ HTML;
 	 * @return void
 	 */
 	public function remove_login_form() {
-		?>
-		<script type="text/javascript">
+		$inline_script = '
 			(function() {
 				var loginForm = document.getElementById("user_login").form;
 				var parent = loginForm.parentNode;
 				parent.removeChild(loginForm);
 			})();
-		</script>
-		<?php
+    ';
+		wp_add_inline_script( 'remove-login-form', $inline_script );
 	}
 }

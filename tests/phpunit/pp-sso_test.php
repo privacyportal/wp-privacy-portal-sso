@@ -11,14 +11,14 @@
 class PP_SSO_Test extends WP_UnitTestCase {
 
 	/**
-	 * @var Privacy_Portal_SSO $oidc_plugin
+	 * @var Privacy_Portal_SSO $pp_sso_plugin
 	 */
-	private $oidc_plugin = null;
+	private $pp_sso_plugin = null;
 
 	/**
-	 * @var PP_SSO_Option_Settings $oidc_plugin_settings
+	 * @var PP_SSO_Option_Settings $pp_sso_plugin_settings
 	 */
-	private $oidc_plugin_settings = null;
+	private $pp_sso_plugin_settings = null;
 
 	/**
 	 * @var int
@@ -33,8 +33,8 @@ class PP_SSO_Test extends WP_UnitTestCase {
 	public function setUp(): void {
 
 		parent::setUp();
-		$this->oidc_plugin = Privacy_Portal_SSO::instance();
-		$this->oidc_plugin_settings = new PP_SSO_Option_Settings(
+		$this->pp_sso_plugin = Privacy_Portal_SSO::instance();
+		$this->pp_sso_plugin_settings = new PP_SSO_Option_Settings(
 			// Default settings values.
 			array(
 				'state_time_limit' => $this->state_time_limit_default,
@@ -50,7 +50,7 @@ class PP_SSO_Test extends WP_UnitTestCase {
 	 */
 	public function tearDown(): void {
 
-		unset( $this->oidc_plugin );
+		unset( $this->pp_sso_plugin );
 		parent::tearDown();
 
 	}
@@ -62,7 +62,7 @@ class PP_SSO_Test extends WP_UnitTestCase {
 	 */
 	public function test_plugin_has_instance_propery() {
 
-		$this->assertObjectHasProperty( '_instance', $this->oidc_plugin, 'Privacy_Portal_SSO has a $_instance property.' );
+		$this->assertObjectHasProperty( '_instance', $this->pp_sso_plugin, 'Privacy_Portal_SSO has a $_instance property.' );
 
 	}
 
@@ -73,7 +73,7 @@ class PP_SSO_Test extends WP_UnitTestCase {
 	 */
 	public function test_plugin_has_settings_propery() {
 
-		$this->assertObjectHasProperty( 'settings', $this->oidc_plugin, 'Privacy_Portal_SSO has a $settings property.' );
+		$this->assertObjectHasProperty( 'settings', $this->pp_sso_plugin, 'Privacy_Portal_SSO has a $settings property.' );
 
 	}
 
@@ -84,7 +84,7 @@ class PP_SSO_Test extends WP_UnitTestCase {
 	 */
 	public function test_plugin_has_logger_propery() {
 
-		$this->assertObjectHasProperty( 'logger', $this->oidc_plugin, 'Privacy_Portal_SSO has a $logger property.' );
+		$this->assertObjectHasProperty( 'logger', $this->pp_sso_plugin, 'Privacy_Portal_SSO has a $logger property.' );
 
 	}
 
@@ -95,7 +95,7 @@ class PP_SSO_Test extends WP_UnitTestCase {
 	 */
 	public function test_plugin_has_client_propery() {
 
-		$this->assertObjectHasProperty( 'client', $this->oidc_plugin, 'Privacy_Portal_SSO has a $client property.' );
+		$this->assertObjectHasProperty( 'client', $this->pp_sso_plugin, 'Privacy_Portal_SSO has a $client property.' );
 
 	}
 
@@ -106,8 +106,8 @@ class PP_SSO_Test extends WP_UnitTestCase {
 	 */
 	public function test_plugin_has_client_wrapper_propery() {
 
-		$this->assertObjectHasProperty( 'settings', $this->oidc_plugin, 'Privacy_Portal_SSO has a $settings property.' );
-		$this->assertInstanceOf( 'PP_SSO_Client_Wrapper', $this->oidc_plugin->client_wrapper, 'Plugin $client_wrapper property is an PP_SSO_Client_Wrapper instance.' );
+		$this->assertObjectHasProperty( 'settings', $this->pp_sso_plugin, 'Privacy_Portal_SSO has a $settings property.' );
+		$this->assertInstanceOf( 'PP_SSO_Client_Wrapper', $this->pp_sso_plugin->client_wrapper, 'Plugin $client_wrapper property is an PP_SSO_Client_Wrapper instance.' );
 
 	}
 
@@ -118,7 +118,7 @@ class PP_SSO_Test extends WP_UnitTestCase {
 	 */
 	public function test_plugin_redirect_uri() {
 
-		$this->assertInstanceOf( 'Privacy_Portal_SSO', $this->oidc_plugin, 'Instance is of type Privacy_Portal_SSO.' );
+		$this->assertInstanceOf( 'Privacy_Portal_SSO', $this->pp_sso_plugin, 'Instance is of type Privacy_Portal_SSO.' );
 
 	}
 
@@ -129,7 +129,7 @@ class PP_SSO_Test extends WP_UnitTestCase {
 	 */
 	public function test_plugin_returns_valid_instance() {
 
-		$this->assertInstanceOf( 'Privacy_Portal_SSO', $this->oidc_plugin, 'Instance is of type Privacy_Portal_SSO.' );
+		$this->assertInstanceOf( 'Privacy_Portal_SSO', $this->pp_sso_plugin, 'Instance is of type Privacy_Portal_SSO.' );
 
 	}
 
@@ -140,12 +140,12 @@ class PP_SSO_Test extends WP_UnitTestCase {
 	 */
 	public function test_plugin_settings_has_state_time_limit_default() {
 
-		$this->assertIsInt( $this->oidc_plugin_settings->state_time_limit, "The PP_SSO_Option_Settings `state_time_limit` value '{$this->oidc_plugin_settings->state_time_limit}' is not and integer or is not set." );
-		if ( defined( 'OIDC_STATE_TIME_LIMIT' ) ) {
-			$expected = intval( OIDC_STATE_TIME_LIMIT );
-			$this->assertEquals( $expected, $this->oidc_plugin_settings->state_time_limit, "The PP_SSO_Option_Settings `state_time_limit` default value '{$this->oidc_plugin_settings->state_time_limit}' is not overridden to '{$expected}'." );
+		$this->assertIsInt( $this->pp_sso_plugin_settings->state_time_limit, "The PP_SSO_Option_Settings `state_time_limit` value '{$this->pp_sso_plugin_settings->state_time_limit}' is not and integer or is not set." );
+		if ( defined( 'PP_SSO_STATE_TIME_LIMIT' ) ) {
+			$expected = intval( PP_SSO_STATE_TIME_LIMIT );
+			$this->assertEquals( $expected, $this->pp_sso_plugin_settings->state_time_limit, "The PP_SSO_Option_Settings `state_time_limit` default value '{$this->pp_sso_plugin_settings->state_time_limit}' is not overridden to '{$expected}'." );
 		} else {
-			$this->assertEquals( $this->state_time_limit_default, $this->oidc_plugin_settings->state_time_limit, "The PP_SSO_Option_Settings `state_time_limit` default value '{$this->oidc_plugin_settings->state_time_limit}' is not '{$this->state_time_limit_default}'." );
+			$this->assertEquals( $this->state_time_limit_default, $this->pp_sso_plugin_settings->state_time_limit, "The PP_SSO_Option_Settings `state_time_limit` default value '{$this->pp_sso_plugin_settings->state_time_limit}' is not '{$this->state_time_limit_default}'." );
 		}
 
 	}

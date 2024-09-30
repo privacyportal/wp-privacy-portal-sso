@@ -20,7 +20,9 @@ Much of the documentation can be found on the Settings > Privacy Portal SSO dash
 ## Table of Contents
 
 - [Installation](#installation)
+
 - [Frequently Asked Questions](#frequently-asked-questions)
+    - [How does Privacy Portal interact with your site?](#how-does-privacy-portal-interact-with-your-site)
     - [What is the Redirect URI?](#what-is-the-redirect-uri)
 - [Configuration Environment Variables/Constants](#configuration-environment-variables-constants)
 - [Hooks](#hooks)
@@ -46,8 +48,23 @@ Much of the documentation can be found on the Settings > Privacy Portal SSO dash
 1. Activate the plugin
 1. Visit Settings > Privacy Portal SSO and configure to meet your needs
 
-
 ## Frequently Asked Questions
+
+### How does Privacy Portal interact with your site?
+
+[Privacy Portal](https://privacyportal.org) is a privacy-focused OAuth 2.0 provider and with an integrated Mail Relay service
+used to keep user emails private through Privacy Aliases.
+
+With Privacy Portal SSO, users will be redirected to the Privacy Portal authentication page, they will need to login (or create
+an account) with Privacy Portal. This step requires them to register their personal email address with Privacy Portal (required
+for privately relaying emails). After logging in to Privacy Portal, users will be prompted to authorize your site to login
+through Privacy Portal. They will then be redirected back to your site with a private and unique identity (ID + email alias).
+
+When sending an email to a user's email alias, your email gets delivered to Privacy Portal's Mail Relay servers responsible for
+privately redirecting it to the user's personal email address. Mail Relay never stores emails, it processes emails in-memory
+and could add a layer of encryption when configured by users.
+
+Please check Privacy Portal's [Privacy Policy](https://privacyportal.org/privacy) and [Terms Of Service](https://privacyportal.org/tos) for more information.
 
 ### What is the Redirect URI?
 
@@ -200,7 +217,7 @@ the `\PP_SSO_Option_Settings` object this plugin uses.
 
 **Note:** It can be difficult to get a copy of the settings from within other hooks. The easiest way to make use of 
 settings in your custom hooks is to call 
-`$settings = get_option('privacy_portal_sso_settings', array());`.
+`$settings = get_option('pp_sso_settings', array());`.
 
 Provides 1 argument: the existing fields array.
 

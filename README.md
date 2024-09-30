@@ -24,6 +24,22 @@ them in your newsletter using an automatically generated email alias.
 
 Much of the documentation can be found on the Settings > Privacy Portal SSO dashboard page.
 
+## How does Privacy Portal interact with your site? ##
+
+[Privacy Portal](https://privacyportal.org) is a privacy-focused OAuth 2.0 provider and with an integrated Mail Relay service
+used to keep user emails private through Privacy Aliases.
+
+With Privacy Portal SSO, users will be redirected to the Privacy Portal authentication page, they will need to login (or create
+an account) with Privacy Portal. This step requires them to register their personal email address with Privacy Portal (required
+for privately relaying emails). After logging in to Privacy Portal, users will be prompted to authorize your site to login
+through Privacy Portal. They will then be redirected back to your site with a private and unique identity (ID + email alias).
+
+When sending an email to a user's email alias, your email gets delivered to Privacy Portal's Mail Relay servers responsible for
+privately redirecting it to the user's personal email address. Mail Relay never stores emails, it processes emails in-memory
+and could add a layer of encryption when configured by users.
+
+Please check Privacy Portal's [Privacy Policy](https://privacyportal.org/privacy) and [Terms Of Service](https://privacyportal.org/tos) for more information.
+
 ## Installation ##
 
 1. Upload to the `/wp-content/plugins/` directory
