@@ -19,7 +19,7 @@
  */
 class PP_SSO_Subscribe_Form {
 
-	const SUBSCRIBE_ANONYMOUSLY_SHORTCODE = 'privacy_portal_anonymous_subscribe_button';
+	const SUBSCRIBE_ANONYMOUSLY_SHORTCODE = 'pp_sso_subscribe_anonymously_button';
 
 	/**
 	 * Plugin settings object.
@@ -58,7 +58,7 @@ class PP_SSO_Subscribe_Form {
 		$subscribe_form = new self( $settings, $client_wrapper );
 
 		// Alter the login form as dictated by settings.
-		add_filter( 'privacy_portal_subscription_message', array( $subscribe_form, 'handle_subscribe_page' ), 99 );
+		add_filter( 'pp-sso-subscription-message', array( $subscribe_form, 'handle_subscribe_page' ), 99 );
 
 		// Add a shortcode for the login button.
 		add_shortcode( self::SUBSCRIBE_ANONYMOUSLY_SHORTCODE, array( $subscribe_form, 'make_subscribe_button' ) );
@@ -121,7 +121,7 @@ class PP_SSO_Subscribe_Form {
 			return '';
 		}
 
-		$subscription_message = apply_filters( 'privacy_portal_subscription_message', '' );
+		$subscription_message = apply_filters( 'pp-sso-subscription-message', '' );
 
 		$atts = shortcode_atts(
 			array(
@@ -141,10 +141,10 @@ class PP_SSO_Subscribe_Form {
 			self::SUBSCRIBE_ANONYMOUSLY_SHORTCODE
 		);
 
-		$title = apply_filters( 'privacy-portal-subscribe-button-title', $atts['title'] );
+		$title = apply_filters( 'pp-sso-subscribe-button-title', $atts['title'] );
 		$title = esc_html( $title );
 
-		$subtitle = apply_filters( 'privacy-portal-subscribe-button-subtitle', $atts['subtitle'] );
+		$subtitle = apply_filters( 'pp-sso-subscribe-button-subtitle', $atts['subtitle'] );
 		$subtitle = esc_html( $subtitle );
 
 		$href = $this->client_wrapper->get_authentication_url(
@@ -196,12 +196,12 @@ class PP_SSO_Subscribe_Form {
 			$subtitle_style = esc_attr( 'font-size: calc(var(--pp-font-size) * 0.7); color: inherit;' );
 		}
 
-		$subscribe_button = <<<HTML
-<div class="pp-subscribe-button-container" style="--pp-font-size: {$font_size};">
-<a class="pp-subscribe-button" href="{$href}" style="{$style}"><span class="pp-title" style="font-size: inherit; color: inherit;">{$title}</span> <span class="pp-subtitle" style="{$subtitle_style}">{$subtitle}</span></a>
-<p class="pp-subscribe-button-message" style="font-size: calc(var(--pp-font-size) * 0.9)">{$subscription_message}</p>
+		$subscribe_button = "
+<div class=\"pp-subscribe-button-container\" style=\"--pp-font-size: {$font_size};\">
+<a class=\"pp-subscribe-button\" href=\"{$href}\" style=\"{$style}\"><span class=\"pp-title\" style=\"font-size: inherit; color: inherit;\">{$title}</span> <span class=\"pp-subtitle\" style=\"{$subtitle_style}\">{$subtitle}</span></a>
+<p class=\"pp-subscribe-button-message\" style=\"font-size: calc(var(--pp-font-size) * 0.9)\">{$subscription_message}</p>
 </div>
-HTML;
+";
 
 		return $subscribe_button;
 	}
@@ -221,13 +221,13 @@ HTML;
 		);
 		$href = esc_url_raw( $href );
 
-		$html = str_replace( 'href="[privacy_portal_anonymous_subscribe_url]"', "href=\"{$href}\" data-pp-type=\"button\"", $content );
+		$html = str_replace( 'href="{pp_sso_subscribe_anonymously_url}"', "href=\"{$href}\" data-pp-type=\"button\"", $content );
 
 		if ( isset( $_GET['pp-enroll-error'] ) && ! empty( $_GET['pp-enroll-error'] ) ) {
 			$error_code = sanitize_text_field( wp_unslash( $_GET['pp-enroll-error'] ) );
 			$error_message = isset( $_GET['pp-message'] ) && ! empty( $_GET['pp-message'] ) ? sanitize_text_field( wp_unslash( $_GET['pp-message'] ) ) : 'Unknown error.';
-			return str_replace( '[privacy_portal_anonymous_subscribe_message]', "<strong>ERROR ({$error_code}):</strong> {$error_message}", $html );
+			return str_replace( '{pp_sso_subscribe_anonymously_message}', "<strong>ERROR ({$error_code}):</strong> {$error_message}", $html );
 		}
-		return str_replace( '[privacy_portal_anonymous_subscribe_message]', '', $html );
+		return str_replace( '{pp_sso_subscribe_anonymously_message}', '', $html );
 	}
 }

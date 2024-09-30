@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Privacy Portal SSO 0.1.0\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/privacyportal/wp-privacy-portal-sso/issues\n"
-"POT-Creation-Date: 2024-09-15 12:53:45+00:00\n"
+"POT-Creation-Date: 2024-09-30 13:26:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,61 +25,61 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: includes/pp-sso-client-wrapper.php:494
+#: includes/pp-sso-client-wrapper.php:527
 msgid "OAUTH Login not supported. Please contact site administrator."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:501
+#: includes/pp-sso-client-wrapper.php:534
 msgid "Anonymous Subscriptions not configured. Please contact site administrator."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:599
+#: includes/pp-sso-client-wrapper.php:634
 msgid "Email claim required."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:653
+#: includes/pp-sso-client-wrapper.php:688
 msgid "Failed to subscribe to Newsletter."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:680
+#: includes/pp-sso-client-wrapper.php:715
 msgid "Failed to subscribe. Please try again later."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:703
+#: includes/pp-sso-client-wrapper.php:738
 msgid "User identity is not linked to an existing WordPress user."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:761
+#: includes/pp-sso-client-wrapper.php:796
 msgid "Invalid user."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:943
+#: includes/pp-sso-client-wrapper.php:978
 msgid "No appropriate username found."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:953
+#: includes/pp-sso-client-wrapper.php:988
 #. translators: %1$s is the santitized version of the username from the IDP.
 msgid "Username %1$s could not be sanitized."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:975
+#: includes/pp-sso-client-wrapper.php:1010
 #. translators: %1$s is the configured User Claim nickname key.
 msgid "No nickname found in user claim using key: %1$s."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:1072
+#: includes/pp-sso-client-wrapper.php:1107
 msgid "User claim incomplete."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:1174
+#: includes/pp-sso-client-wrapper.php:1209
 msgid "Bad user claim result."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:1240
+#: includes/pp-sso-client-wrapper.php:1275
 msgid "Can not authorize."
 msgstr ""
 
-#: includes/pp-sso-client-wrapper.php:1269
+#: includes/pp-sso-client-wrapper.php:1304
 msgid "Failed user creation."
 msgstr ""
 
@@ -174,40 +174,40 @@ msgstr ""
 msgid "Please use a different address."
 msgstr ""
 
-#: includes/pp-sso-login-form.php:128 includes/pp-sso-subscribe-form.php:103
+#: includes/pp-sso-login-form.php:131 includes/pp-sso-subscribe-form.php:103
 #. translators: %1$s is the error code from the IDP.
 msgid "ERROR (%1$s)"
 msgstr ""
 
-#: includes/pp-sso-login-form.php:151 privacy-portal-sso.php:243
+#: includes/pp-sso-login-form.php:154 privacy-portal-sso.php:248
 msgid "Sign In With Privacy Portal"
 msgstr ""
 
-#: includes/pp-sso-option-logger.php:228
+#: includes/pp-sso-option-logger.php:229
 msgid "Details"
 msgstr ""
 
-#: includes/pp-sso-option-logger.php:229
+#: includes/pp-sso-option-logger.php:230
 msgid "Data"
 msgstr ""
 
-#: includes/pp-sso-option-logger.php:236
+#: includes/pp-sso-option-logger.php:237
 msgid "Date"
 msgstr ""
 
-#: includes/pp-sso-option-logger.php:240
+#: includes/pp-sso-option-logger.php:241
 msgid "Type"
 msgstr ""
 
-#: includes/pp-sso-option-logger.php:244
+#: includes/pp-sso-option-logger.php:245
 msgid "User"
 msgstr ""
 
-#: includes/pp-sso-option-logger.php:248
+#: includes/pp-sso-option-logger.php:249
 msgid "URI "
 msgstr ""
 
-#: includes/pp-sso-option-logger.php:252
+#: includes/pp-sso-option-logger.php:253
 msgid "Response&nbsp;Time&nbsp;(sec)"
 msgstr ""
 
@@ -369,7 +369,7 @@ msgid "Identify provider User information endpoint."
 msgstr ""
 
 #: includes/pp-sso-settings-page.php:434
-msgid "Token Validation Endpoint URL"
+msgid "Token Endpoint URL"
 msgstr ""
 
 #: includes/pp-sso-settings-page.php:435
@@ -637,7 +637,7 @@ msgstr ""
 msgid "with Privacy Portal"
 msgstr ""
 
-#: privacy-portal-sso.php:292
+#: privacy-portal-sso.php:297
 msgid "Private site"
 msgstr ""
 
@@ -647,8 +647,9 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Welcome privacy conscious users to your site and/or newsletter with "
-"features like \"Sign In With Privacy Portal\" and \"Subscribe Anonymously\"."
+"Welcome privacy-conscious users to your website and/or email newsletter, "
+"with features like \"Sign In With Privacy Portal\" and \"Subscribe "
+"Anonymously\"."
 msgstr ""
 
 #. Author of the plugin/theme

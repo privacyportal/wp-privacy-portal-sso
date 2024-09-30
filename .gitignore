@@ -19,6 +19,7 @@ phpstan.neon
 phpunit.xml
 .phpunit.result.cache
 clover.xml
+privacy-portal-sso.zip
 
 # OS or Editor folders
 .DS_Store

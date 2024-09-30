@@ -154,6 +154,38 @@ class PP_SSO_Client_Wrapper {
 	}
 
 	/**
+	 * Returns the sanitized version of $_GET params
+	 *
+	 * @param array|null $keys The array of keys to sanitize and return.
+	 *
+	 * @return array<string>
+	 */
+	private function sanitized_get_params( $keys = null ) {
+		// Sanitize GET parameters.
+		$result = array();
+
+		if ( null !== $keys ) {
+			// iterate over and sanitize the requested keys.
+			foreach ( $keys as $key ) {
+				if ( isset( $_GET[ $key ] ) ) {
+					$result[ $key ] = sanitize_text_field( wp_unslash( $_GET[ $key ] ) );
+				}
+			}
+		} else {
+			// iterate and sanitize the first N values.
+			$n = 10;
+			foreach ( $_GET as &$value ) {
+				if ( $n-- <= 0 ) {
+					break;
+				}
+				$value = sanitize_text_field( wp_unslash( $value ) );
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Get the client login redirect.
 	 *
 	 * @return string
@@ -190,7 +222,8 @@ class PP_SSO_Client_Wrapper {
 				$redirect_url = home_url( add_query_arg( null, null ) );
 				// @phpstan-ignore-next-line
 				if ( $wp->did_permalink ) {
-					$redirect_url = home_url( add_query_arg( $_GET, trailingslashit( $wp->request ) ) );
+					$get_params = $this->sanitized_get_params();
+					$redirect_url = home_url( add_query_arg( $get_params, trailingslashit( $wp->request ) ) );
 				}
 			}
 		}
@@ -240,7 +273,7 @@ class PP_SSO_Client_Wrapper {
 				'acr_values' => $this->settings->acr_values,
 			),
 			$atts,
-			'privacy_portal_sso_auth_url'
+			PP_SSO_Login_Form::LOGIN_URL_SHORTCODE
 		);
 
 		// Validate the redirect to value to prevent a redirection attack.
@@ -504,7 +537,9 @@ class PP_SSO_Client_Wrapper {
 		}
 
 		// Start the authentication flow.
-		$authentication_request = $client->validate_authentication_request( $_GET );
+		$authentication_request = $client->validate_authentication_request(
+			$this->sanitized_get_params( array( 'error', 'code', 'state' ) )
+		);
 
 		if ( is_wp_error( $authentication_request ) ) {
 			$this->error_redirect( $authentication_request, $type );
@@ -535,7 +570,7 @@ class PP_SSO_Client_Wrapper {
 		$token_response = $client->get_token_response( $token_result );
 
 		// Allow for other plugins to alter data before validation.
-		$token_response = apply_filters( 'openid-connect-modify-token-response-before-validation', $token_response );
+		$token_response = apply_filters( 'pp-sso-modify-token-response-before-validation', $token_response );
 
 		if ( is_wp_error( $token_response ) ) {
 			$this->error_redirect( $token_response, $type );
@@ -556,7 +591,7 @@ class PP_SSO_Client_Wrapper {
 		$id_token_claim = $client->get_id_token_claim( $token_response );
 
 		// Allow for other plugins to alter data before validation.
-		$id_token_claim = apply_filters( 'openid-connect-modify-id-token-claim-before-validation', $id_token_claim );
+		$id_token_claim = apply_filters( 'pp-sso-modify-id-token-claim-before-validation', $id_token_claim );
 
 		if ( is_wp_error( $id_token_claim ) ) {
 			$this->error_redirect( $id_token_claim, $type );
@@ -783,7 +818,7 @@ class PP_SSO_Client_Wrapper {
 		$id_token_claim = $client->get_id_token_claim( $token_response );
 
 		// Allow for other plugins to alter data before validation.
-		$id_token_claim = apply_filters( 'openid-connect-modify-id-token-claim-before-validation', $id_token_claim );
+		$id_token_claim = apply_filters( 'pp-sso-modify-id-token-claim-before-validation', $id_token_claim );
 
 		if ( is_wp_error( $id_token_claim ) ) {
 			return $id_token_claim;
