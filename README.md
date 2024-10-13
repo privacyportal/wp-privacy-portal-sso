@@ -3,7 +3,7 @@
 **Tags:** security, privacy, login, oauth, sso  
 **Requires at least:** 5.0  
 **Tested up to:** 6.6.1  
-**Stable tag:** 0.1.0  
+**Stable tag:** 0.1.1  
 **Requires PHP:** 7.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -13,32 +13,34 @@ and "Subscribe Anonymously".
 
 ## Description ##
 
-This plugin allows users to authenticate using "Sign In With Privacy Portal". After obtaining consent, an existing user
-is automatically logged into WordPress, while new users are created in the WordPress database. [Privacy Portal](https://privacyportal.org)
-protects user privacy by generating email aliases (AKA Privacy Alias) that relay emails to their personal email addresses,
-keeping them private.
+This plugin allows you to integrate [Sign In With Privacy Portal](https://privacyportal.org/for-business/products#sign-in-with-privacy-portal) and [Subscribe Anonymously With Privacy Portal](https://privacyportal.org/for-business/products#subscribe-anonymously-with-privacy-portal) with your site.
 
-Similarly, it allows visitors to anonymously subscribe your newsletter without ever exposing their personal emails to
-your site. It provides a "Subscribe Anonymously" button that authenticates visitors through Privacy Portal and enrolls
-them in your newsletter using an automatically generated email alias.
-
-Much of the documentation can be found on the Settings > Privacy Portal SSO dashboard page.
-
-## How does Privacy Portal interact with your site? ##
-
-[Privacy Portal](https://privacyportal.org) is a privacy-focused OAuth 2.0 provider and with an integrated Mail Relay service
-used to keep user emails private through Privacy Aliases.
-
-With Privacy Portal SSO, users will be redirected to the Privacy Portal authentication page, they will need to login (or create
-an account) with Privacy Portal. This step requires them to register their personal email address with Privacy Portal (required
-for privately relaying emails). After logging in to Privacy Portal, users will be prompted to authorize your site to login
-through Privacy Portal. They will then be redirected back to your site with a private and unique identity (ID + email alias).
-
-When sending an email to a user's email alias, your email gets delivered to Privacy Portal's Mail Relay servers responsible for
-privately redirecting it to the user's personal email address. Mail Relay never stores emails, it processes emails in-memory
-and could add a layer of encryption when configured by users.
+[Privacy Portal](https://privacyportal.org) is a privacy-focused OAuth 2.0 provider and offers an integrated Mail Relay service to keep user emails private through Privacy Aliases.
 
 Please check Privacy Portal's [Privacy Policy](https://privacyportal.org/privacy) and [Terms Of Service](https://privacyportal.org/tos) for more information.
+
+## Sign In With Privacy Portal ##
+
+[Privacy Portal](https://privacyportal.org) is an OAuth 2.0 Provider with Privacy baked-in. When *Sign In With Privacy Portal* is enabled, users can log in to your site while preserving their privacy using the Privacy Portal OAuth provider. During the login process, [Privacy Portal](https://privacyportal.org) protects user privacy by generating email aliases (also known as Privacy Aliases) that relay emails to users' personal email addresses, keeping them private.
+
+1. The "Sign In With Privacy Portal" button will be displayed on your site. (It can be added to any page.)
+2. Visitors to your site can click on the button to initiate the login process.
+3. Once clicked, they will be redirected to the Privacy Portal web app to authorize access to your site.
+4. After authorization, users will be redirected back to your site. Existing users will be automatically logged into WordPress, while new users will be created in the WordPress database and then logged in.
+
+## Subscribe Anonymously With Privacy Portal ##
+
+When "Subscribe Anonymously with Privacy Portal" is enabled, users can subscribe to your existing newsletter using email aliases instead of their personal email addresses. This feature does not replace your existing newsletter setup; instead, it integrates with some popular newsletter plugins.
+
+1. The "Subscribe Anonymously" button will be displayed within your newsletter forms. (It can be added to any page.)
+2. Visitors to your site can click on the button to enroll anonymously in your newsletter without having to enter their email address.
+3. Once clicked, they will be redirected to the Privacy Portal web app to authorize access to your site.
+4. After authorization, Privacy Portal generates an email alias that is used to enroll the user in your newsletter. Note that the user remains anonymous throughout the process.
+
+## Important Notes ##
+
+- With Privacy Portal SSO, users will be redirected to the Privacy Portal web app, where they need to log in with their Privacy Portal account to authorize access to your site. If they don't have an account, they can create a free one during this process.
+- When sending an email to a user's email alias, your email is delivered to Privacy Portal's Mail Relay servers, which privately redirect it to the user's personal email address. Mail Relay does not store emails; it processes them in-memory and can add a layer of encryption when configured by users.
 
 ## Installation ##
 
@@ -58,6 +60,10 @@ You can find the redirect URIs on the plugin's settings page.
 
 ## Changelog ##
 
+### 0.1.1 ###
+
+* Improvement: Update plugin README.
+
 ### 0.1.0 ###
 
 * Feature: Configures "Sign In With Privacy Portal" as OAUTH provider and simplifies the settings page.
@@ -67,9 +73,7 @@ You can find the redirect URIs on the plugin's settings page.
 * Feature: Adds "Subscribe Anonymously With Privacy Portal" integration with The Newsletter Plugin.
 * Feature: Adds "Subscribe Anonymously With Privacy Portal" integration with the ConvertKit Plugin.
 
-## Pre-Fork Changelog (from OpenId Connect Generic) ##
-
-### 3.10.0 ###
+### 3.10.0 (Forked from OpenId Connect Generic) ###
 
 * Chore: @timnolte - Dependency updates.
 * Fix: @drzraf - Prevents running the auth url filter twice.
@@ -80,12 +84,12 @@ You can find the redirect URIs on the plugin's settings page.
 * Feature: @menno-ll - Adds a remember me feature via a new filter.
 * Improvement: @menno-ll - Updates WP Cookie Expiration to Same as Session Length.
 
-### 3.9.1 ###
+### 3.9.1 (pre-fork) ###
 
 * Improvement: @timnolte - Refactors Composer setup and GitHub Actions.
 * Improvement: @timnolte - Bumps WordPress tested version compatibility.
 
-### 3.9.0 ###
+### 3.9.0 (pre-fork) ###
 
 * Feature: @matchaxnb - Added support for additional configuration constants.
 * Feature: @schanzen - Added support for agregated claims.
@@ -103,35 +107,35 @@ You can find the redirect URIs on the plugin's settings page.
 * Security: @timnolte - Updated build tooling security vulnerabilities.
 * Improvement: @timnolte - Changed build tooling scripts.
 
-### 3.8.5 ###
+### 3.8.5 (pre-fork) ###
 
 * Fix: @timnolte - Fixed missing URL request validation before use & ensure proper current page URL is setup for Redirect Back.
 * Fix: @timnolte - Fixed Redirect URL Logic to Handle Sub-directory Installs.
 * Fix: @timnolte - Fixed issue with redirecting user back when the openid_connect_generic_auth_url shortcode is used.
 
-### 3.8.4 ###
+### 3.8.4 (pre-fork) ###
 
 * Fix: @timnolte - Fixed invalid State object access for redirection handling.
 * Improvement: @timnolte - Fixed local wp-env Docker development environment.
 * Improvement: @timnolte - Fixed Composer scripts for linting and static analysis.
 
-### 3.8.3 ###
+### 3.8.3 (pre-fork) ###
 
 * Fix: @timnolte - Fixed problems with proper redirect handling.
 * Improvement: @timnolte - Changes redirect handling to use State instead of cookies.
 * Improvement: @timnolte - Refactored additional code to meet coding standards.
 
-### 3.8.2 ###
+### 3.8.2 (pre-fork) ###
 
 * Fix: @timnolte - Fixed reported XSS vulnerability on WordPress login screen.
 
-### 3.8.1 ###
+### 3.8.1 (pre-fork) ###
 
 * Fix: @timnolte - Prevent SSO redirect on password protected posts.
 * Fix: @timnolte - CI/CD build issues.
 * Fix: @timnolte - Invalid redirect handling on logout for Auto Login setting.
 
-### 3.8.0 ###
+### 3.8.0 (pre-fork) ###
 
 * Feature: @timnolte - Ability to use 6 new constants for setting client configuration instead of storing in the DB.
 * Improvement: @timnolte - Plugin development & contribution updates.
