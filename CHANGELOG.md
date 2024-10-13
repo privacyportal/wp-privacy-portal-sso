@@ -1,5 +1,9 @@
 # Privacy Portal SSO Changelog (forked from OpenId Connect Generic @ 3.10.0)
 
+**0.1.1**
+
+- Improvement: Update plugin README.
+
 **0.1.0**
 
 - Feature: Configures "Sign In With Privacy Portal" as OAUTH provider and simplifies the settings page.

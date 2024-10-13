@@ -16,7 +16,7 @@
  * Plugin Name:       Privacy Portal SSO
  * Plugin URI:        https://github.com/privacyportal/wp-privacy-portal-sso
  * Description:       Welcome privacy-conscious users to your website and/or email newsletter, with features like "Sign In With Privacy Portal" and "Subscribe Anonymously".
- * Version:           0.1.0
+ * Version:           0.1.1
  * Requires at least: 5.0
  * Requires PHP:      7.4
  * Author:            Privacy Portal
@@ -114,7 +114,7 @@ class Privacy_Portal_SSO {
 	 *
 	 * @var string
 	 */
-	const VERSION = '0.1.0';
+	const VERSION = '0.1.1';
 
 	/**
 	 * Plugin settings.
