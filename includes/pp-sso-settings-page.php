@@ -139,7 +139,7 @@ class PP_SSO_Settings_Page {
 					if ( isset( $value['description'] ) && ! empty( $value['description'] ) ) {
 						$title_and_description .= "<br/><span>{$value['description']}</span>";
 					}
-					return $title_and_description .
+					return $title_and_description . '<br/>' .
 					join(
 						'',
 						array_map(
@@ -293,6 +293,11 @@ class PP_SSO_Settings_Page {
 		return array(
 			'login_settings' => array(
 				array(
+					'title' => __( 'Important Note:', 'privacy-portal-sso' ),
+					'description' => __( 'This plugin defines new WordPress Permalinks needed for the redirection back to your site. The first time you enable "Sign In with Privacy Portal", you will need to manually go to the Permalinks page under Settings and click on "Save Changes".', 'privacy-portal-sso' ),
+					'properties' => array(),
+				),
+				array(
 					'title' => __( 'To use Sign In With Privacy Portal please make sure your OAUTH app has the following configuration:', 'privacy-portal-sso' ),
 					'properties' => array(
 						'redirect_uri' => site_url( '/pp-sso-authorize' ),
@@ -312,6 +317,11 @@ class PP_SSO_Settings_Page {
 				),
 			),
 			'enroll_settings' => array(
+				array(
+					'title' => __( 'Important Note:', 'privacy-portal-sso' ),
+					'description' => __( 'This plugin defines new WordPress Permalinks needed for the redirection back to your site. The first time you enable "Subscribe Anonymously with Privacy Portal", you will need to manually go to the Permalinks page under Settings and click on "Save Changes".', 'privacy-portal-sso' ),
+					'properties' => array(),
+				),
 				array(
 					'title' => __( 'To use Subscribe Anonymously with Privacy Portal please make sure your OAUTH app has the following configuration:', 'privacy-portal-sso' ),
 					'properties' => array(

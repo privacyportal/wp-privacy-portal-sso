@@ -66,9 +66,11 @@ class PP_SSO_Ext_ConvertKit_Plugin {
 				);
 				// convertkit is connected.
 				$convertkit_forms = $convertkit_api->get_forms();
-				foreach ( $convertkit_forms['forms'] as $convertkit_form ) {
-					// Use the page ID as the key and the page title as the value.
-					$lists[ self::NAMESPACE . '::' . $convertkit_form['id'] ] = self::SHORT_NAME . ' - ' . $convertkit_form['name'];
+				if ( ! is_wp_error( $convertkit_forms ) ) {
+					foreach ( $convertkit_forms['forms'] as $convertkit_form ) {
+						// Use the page ID as the key and the page title as the value.
+						$lists[ self::NAMESPACE . '::' . $convertkit_form['id'] ] = self::SHORT_NAME . ' - ' . $convertkit_form['name'];
+					}
 				}
 				// @codingStandardsIgnoreLine
 			} catch ( \Exception ) {

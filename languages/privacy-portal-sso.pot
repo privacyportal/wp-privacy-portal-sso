@@ -2,10 +2,10 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Privacy Portal SSO 0.1.1\n"
+"Project-Id-Version: Privacy Portal SSO 0.1.2\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/privacyportal/wp-privacy-portal-sso/issues\n"
-"POT-Creation-Date: 2024-10-13 19:43:18+00:00\n"
+"POT-Creation-Date: 2024-10-15 16:05:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -159,18 +159,18 @@ msgstr ""
 msgid "Unauthorized access."
 msgstr ""
 
-#: includes/pp-sso-ext-convertkit-plugin.php:115
-#: includes/pp-sso-ext-mailpoet-plugin.php:99
-#: includes/pp-sso-ext-mc4wp-plugin.php:105
-#: includes/pp-sso-ext-newsletter-plugin.php:125
+#: includes/pp-sso-ext-convertkit-plugin.php:117
+#: includes/pp-sso-ext-mailpoet-plugin.php:101
+#: includes/pp-sso-ext-mc4wp-plugin.php:107
+#: includes/pp-sso-ext-newsletter-plugin.php:127
 msgid "Failed to subscribe."
 msgstr ""
 
-#: includes/pp-sso-ext-newsletter-plugin.php:91
+#: includes/pp-sso-ext-newsletter-plugin.php:93
 msgid "Email address already exists."
 msgstr ""
 
-#: includes/pp-sso-ext-newsletter-plugin.php:93
+#: includes/pp-sso-ext-newsletter-plugin.php:95
 msgid "Please use a different address."
 msgstr ""
 
@@ -231,21 +231,33 @@ msgstr ""
 msgid "Log Settings"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:296
+#: includes/pp-sso-settings-page.php:296 includes/pp-sso-settings-page.php:321
+msgid "Important Note:"
+msgstr ""
+
+#: includes/pp-sso-settings-page.php:297
+msgid ""
+"This plugin defines new WordPress Permalinks needed for the redirection "
+"back to your site. The first time you enable \"Sign In with Privacy "
+"Portal\", you will need to manually go to the Permalinks page under "
+"Settings and click on \"Save Changes\"."
+msgstr ""
+
+#: includes/pp-sso-settings-page.php:301
 msgid ""
 "To use Sign In With Privacy Portal please make sure your OAUTH app has the "
 "following configuration:"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:302 includes/pp-sso-settings-page.php:322
+#: includes/pp-sso-settings-page.php:307 includes/pp-sso-settings-page.php:332
 msgid "Wordpress Shortcodes:"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:309 includes/pp-sso-settings-page.php:338
+#: includes/pp-sso-settings-page.php:314 includes/pp-sso-settings-page.php:348
 msgid "Email Configuration:"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:310
+#: includes/pp-sso-settings-page.php:315
 msgid ""
 "When using \"Sign In With Privacy Portal\", users can only receive emails "
 "from domains you own. In order to send email to users, you must verify your "
@@ -255,24 +267,32 @@ msgid ""
 "by your email provider."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:316
+#: includes/pp-sso-settings-page.php:322
+msgid ""
+"This plugin defines new WordPress Permalinks needed for the redirection "
+"back to your site. The first time you enable \"Subscribe Anonymously with "
+"Privacy Portal\", you will need to manually go to the Permalinks page under "
+"Settings and click on \"Save Changes\"."
+msgstr ""
+
+#: includes/pp-sso-settings-page.php:326
 msgid ""
 "To use Subscribe Anonymously with Privacy Portal please make sure your "
 "OAUTH app has the following configuration:"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:330
+#: includes/pp-sso-settings-page.php:340
 msgid "Wordpress Shortcode Alternative:"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:331
+#: includes/pp-sso-settings-page.php:341
 msgid ""
 "Instead of using shortcodes, with plugins such as MailPoet, you can "
 "integrate the \"Subscribe Anonymously\" button directly into the MailPoet "
 "form by using the following html elements that you can style as you please."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:339
+#: includes/pp-sso-settings-page.php:349
 msgid ""
 "When using \"Subscribe Anonymously With Privacy Portal\", users can only "
 "receive emails from domains you own. In order to send email to users, you "
@@ -282,132 +302,132 @@ msgid ""
 "verification steps required by your email provider."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:364
+#: includes/pp-sso-settings-page.php:374
 msgid "Client ID"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:365
+#: includes/pp-sso-settings-page.php:375
 msgid ""
 "The Client ID is generated automatically when you create an OAUTH app on "
 "Privacy Portal."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:371
+#: includes/pp-sso-settings-page.php:381
 msgid "Client Secret Key"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:372
+#: includes/pp-sso-settings-page.php:382
 msgid ""
 "The Client Secret can be generated in your OAUTH app's authentication "
 "settings on Privacy Portal."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:378
+#: includes/pp-sso-settings-page.php:388
 msgid "Enable SSO"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:379
+#: includes/pp-sso-settings-page.php:389
 msgid "Enable authentication using \"Sign In With Privacy Portal\"."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:384
+#: includes/pp-sso-settings-page.php:394
 msgid "Enable Subscriptions"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:385
+#: includes/pp-sso-settings-page.php:395
 msgid "Enable Anonymous Subscriptions with Privacy Portal."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:390
+#: includes/pp-sso-settings-page.php:400
 msgid "Login Type"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:391
+#: includes/pp-sso-settings-page.php:401
 msgid "Select how the client (login form) should provide login options."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:394
+#: includes/pp-sso-settings-page.php:404
 msgid "Sign-In Button on login form"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:395
+#: includes/pp-sso-settings-page.php:405
 msgid "Auto Login - SSO"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:402
+#: includes/pp-sso-settings-page.php:412
 msgid "OpenID Scope"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:403
+#: includes/pp-sso-settings-page.php:413
 msgid "Space separated list of scopes this client should access during Login."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:410
+#: includes/pp-sso-settings-page.php:420
 msgid "OpenID Scope (Newsletter)"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:411
+#: includes/pp-sso-settings-page.php:421
 msgid ""
 "Space separated list of scopes this client should access during Anonymous "
 "Subscriptions."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:418
+#: includes/pp-sso-settings-page.php:428
 msgid "Login Endpoint URL"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:419
+#: includes/pp-sso-settings-page.php:429
 msgid "Identify provider authorization endpoint."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:426
+#: includes/pp-sso-settings-page.php:436
 msgid "Userinfo Endpoint URL"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:427
+#: includes/pp-sso-settings-page.php:437
 msgid "Identify provider User information endpoint."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:434
+#: includes/pp-sso-settings-page.php:444
 msgid "Token Endpoint URL"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:435
+#: includes/pp-sso-settings-page.php:445
 msgid "Identify provider token endpoint."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:442
+#: includes/pp-sso-settings-page.php:452
 msgid "End Session Endpoint URL"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:443
+#: includes/pp-sso-settings-page.php:453
 msgid "Identify provider logout endpoint."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:450
+#: includes/pp-sso-settings-page.php:460
 msgid "ACR values"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:451
+#: includes/pp-sso-settings-page.php:461
 msgid "Use a specific defined authentication contract from the IDP - optional."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:457
+#: includes/pp-sso-settings-page.php:467
 msgid "Identity Key"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:458
+#: includes/pp-sso-settings-page.php:468
 msgid ""
 "Where in the user claim array to find the user's identification data. "
 "Possible standard values: preferred_username, name, or sub. If you're "
 "having trouble, use \"sub\"."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:465
+#: includes/pp-sso-settings-page.php:475
 msgid "Disable SSL Verify"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:467
+#: includes/pp-sso-settings-page.php:477
 #. translators: %1$s HTML tags for layout/styles, %2$s closing HTML tag for
 #. styles.
 msgid ""
@@ -418,27 +438,27 @@ msgid ""
 "sites.%2$s"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:473
+#: includes/pp-sso-settings-page.php:483
 msgid "HTTP Request Timeout"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:474
+#: includes/pp-sso-settings-page.php:484
 msgid "Set the timeout for requests made to the IDP. Default value is 5."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:481
+#: includes/pp-sso-settings-page.php:491
 msgid "Enforce Privacy"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:482
+#: includes/pp-sso-settings-page.php:492
 msgid "Require users be logged in to see the site."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:489
+#: includes/pp-sso-settings-page.php:499
 msgid "Alternate Redirect URI"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:490
+#: includes/pp-sso-settings-page.php:500
 msgid ""
 "Provide an alternative redirect route. Useful if your server is causing "
 "issues with the default admin-ajax method. You must flush rewrite rules "
@@ -446,78 +466,78 @@ msgid ""
 "settings page."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:497
+#: includes/pp-sso-settings-page.php:507
 msgid "Nickname Key"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:498
+#: includes/pp-sso-settings-page.php:508
 msgid ""
 "Where in the user claim array to find the user's nickname. Possible "
 "standard values: preferred_username, name, or sub."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:506
+#: includes/pp-sso-settings-page.php:516
 msgid "Email Formatting"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:507
+#: includes/pp-sso-settings-page.php:517
 msgid ""
 "String from which the user's email address is built. Specify \"{email}\" as "
 "long as the user claim contains an email claim."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:515
+#: includes/pp-sso-settings-page.php:525
 msgid "Display Name Formatting"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:516
+#: includes/pp-sso-settings-page.php:526
 msgid "String from which the user's display name is built."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:524
+#: includes/pp-sso-settings-page.php:534
 msgid "Identify with User Name"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:525
+#: includes/pp-sso-settings-page.php:535
 msgid ""
 "If checked, the user's identity will be determined by the user name instead "
 "of the email address."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:532
+#: includes/pp-sso-settings-page.php:542
 msgid "State time limit"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:533
+#: includes/pp-sso-settings-page.php:543
 msgid "State valid time in seconds. Defaults to 180"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:540
+#: includes/pp-sso-settings-page.php:550
 msgid "Enable Refresh Token"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:541
+#: includes/pp-sso-settings-page.php:551
 msgid ""
 "If checked, support refresh tokens used to obtain access tokens from "
 "supported IDPs."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:548
+#: includes/pp-sso-settings-page.php:558
 msgid "Link Existing Users"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:549
+#: includes/pp-sso-settings-page.php:559
 msgid ""
 "If a WordPress account already exists with the same identity as a "
 "newly-authenticated user over OpenID Connect, login as that user instead of "
 "generating an error."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:556
+#: includes/pp-sso-settings-page.php:566
 msgid "Create user if does not exist"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:557
+#: includes/pp-sso-settings-page.php:567
 msgid ""
 "If the user identity is not linked to an existing WordPress user, it is "
 "created. If this setting is not enabled, and if the user authenticates with "
@@ -525,11 +545,11 @@ msgid ""
 "authentication will fail."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:564
+#: includes/pp-sso-settings-page.php:574
 msgid "Redirect Back to Origin Page"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:565
+#: includes/pp-sso-settings-page.php:575
 msgid ""
 "After a successful OpenID Connect authentication, this will redirect the "
 "user back to the page on which they clicked the OpenID Connect login "
@@ -540,76 +560,76 @@ msgid ""
 "account page."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:572
+#: includes/pp-sso-settings-page.php:582
 msgid "Redirect to the login screen when session is expired"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:573
+#: includes/pp-sso-settings-page.php:583
 msgid ""
 "When enabled, this will automatically redirect the user back to the "
 "WordPress login page if their access token has expired."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:580
+#: includes/pp-sso-settings-page.php:590
 msgid "Newsletter Lists"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:581
+#: includes/pp-sso-settings-page.php:591
 msgid ""
 "Select one or more lists to subscribe users to when using \"Subscribe "
 "Anonymously\". You must have one of the supported Newsletter plugins "
 "installed and configured."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:590
+#: includes/pp-sso-settings-page.php:600
 msgid "Try Enable Double Opt-In"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:591
+#: includes/pp-sso-settings-page.php:601
 msgid ""
 "When possible, enables confirmation emails. You might need to also enable "
 "Double opt-in directly with your newsletter provider."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:597
+#: includes/pp-sso-settings-page.php:607
 msgid "On Subscription Success"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:598 includes/pp-sso-settings-page.php:606
+#: includes/pp-sso-settings-page.php:608 includes/pp-sso-settings-page.php:616
 msgid "Go to page"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:605
+#: includes/pp-sso-settings-page.php:615
 msgid "On Subscription Failure"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:613
+#: includes/pp-sso-settings-page.php:623
 msgid "Enable Logging"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:614
+#: includes/pp-sso-settings-page.php:624
 msgid "Very simple log messages for debugging purposes."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:620
+#: includes/pp-sso-settings-page.php:630
 msgid "Log Limit"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:621
+#: includes/pp-sso-settings-page.php:631
 msgid ""
 "Number of items to keep in the log. These logs are stored as an option in "
 "the database, so space is limited."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:693
+#: includes/pp-sso-settings-page.php:703
 msgid "Logs"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:793
+#: includes/pp-sso-settings-page.php:803
 msgid "Example"
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:806
+#: includes/pp-sso-settings-page.php:816
 msgid ""
 "Enter your OAUTH app credentials provided to you by Privacy Portal. If you "
 "haven't yet registered your Wordpress site as an OAUTH app on Privacy "
@@ -617,15 +637,15 @@ msgid ""
 "a \"New Application\"."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:815
+#: includes/pp-sso-settings-page.php:825
 msgid "Configure OAUTH authentication to your Wordpress website."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:824
+#: includes/pp-sso-settings-page.php:834
 msgid "Set up OAUTH-based anonymous subscriptions to your newsletter."
 msgstr ""
 
-#: includes/pp-sso-settings-page.php:833
+#: includes/pp-sso-settings-page.php:843
 msgid "Log information about OAUTH login attempts."
 msgstr ""
 

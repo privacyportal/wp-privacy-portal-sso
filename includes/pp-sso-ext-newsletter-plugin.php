@@ -57,9 +57,11 @@ class PP_SSO_Ext_Newsletter_Plugin {
 				// is there a check to make sure it's activated?
 				$newsletter_lists = $newsletter_api->get_lists();
 
-				foreach ( $newsletter_lists as $id => $newsletter_list ) {
-					// Use the page ID as the key and the page title as the value.
-					$lists[ self::NAMESPACE . '::' . $newsletter_list->id ] = self::SHORT_NAME . ' - ' . $newsletter_list->name;
+				if ( ! is_wp_error( $newsletter_lists ) ) {
+					foreach ( $newsletter_lists as $id => $newsletter_list ) {
+						// Use the page ID as the key and the page title as the value.
+						$lists[ self::NAMESPACE . '::' . $newsletter_list->id ] = self::SHORT_NAME . ' - ' . $newsletter_list->name;
+					}
 				}
 				// @codingStandardsIgnoreLine
 			} catch ( \Exception ) {

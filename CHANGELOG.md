@@ -1,5 +1,9 @@
 # Privacy Portal SSO Changelog (forked from OpenId Connect Generic @ 3.10.0)
 
+**0.1.2**
+
+- Fix: Handle Kit plugin error on empty lists.
+
 **0.1.1**
 
 - Improvement: Update plugin README.
