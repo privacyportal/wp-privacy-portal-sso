@@ -52,9 +52,11 @@ class PP_SSO_Ext_MailPoet_Plugin {
 				$mailpoet_api = \MailPoet\API\API::MP( 'v1' );
 				$mailpoet_lists = $mailpoet_api->getLists();
 
-				foreach ( $mailpoet_lists as $id => $mailpoet_list ) {
-					// Use the page ID as the key and the page title as the value.
-					$lists[ self::NAMESPACE . '::' . $mailpoet_list['id'] ] = self::SHORT_NAME . ' - ' . $mailpoet_list['name'];
+				if ( ! is_wp_error( $mailpoet_lists ) ) {
+					foreach ( $mailpoet_lists as $id => $mailpoet_list ) {
+						// Use the page ID as the key and the page title as the value.
+						$lists[ self::NAMESPACE . '::' . $mailpoet_list['id'] ] = self::SHORT_NAME . ' - ' . $mailpoet_list['name'];
+					}
 				}
 				// @codingStandardsIgnoreLine
 			} catch ( \Exception ) {

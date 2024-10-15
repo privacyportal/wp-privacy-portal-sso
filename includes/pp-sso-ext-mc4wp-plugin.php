@@ -55,9 +55,11 @@ class PP_SSO_Ext_MC4WP_Plugin {
 				$mailchimp_api = mc4wp_get_api_v3();
 				$mailchimp_lists = $mailchimp_api->get_lists();
 
-				foreach ( $mailchimp_lists as $id => $mailchimp_list ) {
-					// Use the page ID as the key and the page title as the value.
-					$lists[ self::NAMESPACE . '::' . $mailchimp_list->id ] = self::SHORT_NAME . ' - ' . $mailchimp_list->name;
+				if ( ! is_wp_error( $mailchimp_lists ) ) {
+					foreach ( $mailchimp_lists as $id => $mailchimp_list ) {
+						// Use the page ID as the key and the page title as the value.
+						$lists[ self::NAMESPACE . '::' . $mailchimp_list->id ] = self::SHORT_NAME . ' - ' . $mailchimp_list->name;
+					}
 				}
 				// @codingStandardsIgnoreLine
 			} catch ( \Exception ) {

@@ -3,7 +3,7 @@
 **Tags:** security, privacy, login, oauth, sso  
 **Requires at least:** 5.0  
 **Tested up to:** 6.6.1  
-**Stable tag:** 0.1.1  
+**Stable tag:** 0.1.2  
 **Requires PHP:** 7.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -52,13 +52,19 @@ When "Subscribe Anonymously with Privacy Portal" is enabled, users can subscribe
 
 ### What is the Redirect URI? ###
 
-Privacy Portal's OAUTH2 servers require a whitelist of redirect URIs for security purposes. When using Privacy Portal SSO,
-there are two redirect URIs that you need to add depending on the features you're looking to use. You must add both redirect
-URIs in your app configuration if you'd like to use both "Sign In With Privacy Portal" and "Subscribe Anonymously".
+Privacy Portal's OAUTH2 servers require a whitelist of redirect URIs for security purposes. When using Privacy Portal SSO, there are two redirect URIs that you need to add depending on the features you're looking to use. You must add both redirect URIs in your app configuration if you'd like to use both "Sign In With Privacy Portal" and "Subscribe Anonymously".
 
 You can find the redirect URIs on the plugin's settings page.
 
+### Is the Privacy Portal OAuth provider free? ###
+
+Privacy Portal has a generous free plan that covers the needs of most small to medium sized websites. It also offers a free upgrade for sites that fall under our *Freedom-Tech* discount. [Learn more](https://privacyportal.org/for-business/products#pricing).
+
 ## Changelog ##
+
+### 0.1.2 ###
+
+* Fix: Handle Kit plugin error on empty lists.
 
 ### 0.1.1 ###
 
